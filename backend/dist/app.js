@@ -1,3 +1,38 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-console.log('hei');
+const express_1 = __importDefault(require("express"));
+const path_1 = __importDefault(require("path"));
+const cors_1 = __importDefault(require("cors"));
+const auth_routes_1 = __importDefault(require("./api/auth/auth.routes"));
+const hero_routes_1 = __importDefault(require("./api/hero/hero.routes"));
+const mongoose_1 = __importDefault(require("mongoose"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const logger_service_1 = require("./services/logger.service");
+const app = (0, express_1.default)();
+const port = process.env.PORT || 3030;
+app.use(express_1.default.json());
+dotenv_1.default.config();
+if (process.env.NODE_ENV === "production") {
+    app.use(express_1.default.static(path_1.default.resolve(__dirname, "public")));
+}
+else {
+    const corsOptions = {
+        credentials: true,
+        origin: [
+            "http://127.0.0.1:8080",
+            "http://localhost:8080",
+            "http://127.0.0.1:3000",
+            "http://localhost:3000",
+        ],
+    };
+    app.use((0, cors_1.default)(corsOptions));
+}
+app.use("/api/auth", auth_routes_1.default);
+app.use("/api/hero", hero_routes_1.default);
+mongoose_1.default.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jxpry.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`);
+app.listen(port, () => {
+    logger_service_1.logger.info("Server is running on port: " + port);
+});
