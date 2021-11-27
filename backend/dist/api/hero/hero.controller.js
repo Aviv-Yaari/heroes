@@ -32,7 +32,7 @@ const add = async (req, res) => {
         res.json(hero);
     }
     catch (err) {
-        logger_service_1.logger.info("Error in add hero: " + err);
+        logger_service_1.logger.info('Error in add hero: ' + err);
         res.status(500).send({ err });
     }
 };
@@ -43,7 +43,7 @@ const train = async (req, res) => {
         res.json(trainingHistory);
     }
     catch (err) {
-        logger_service_1.logger.info("Error in train hero: " + err);
+        logger_service_1.logger.info('Error in train hero: ' + err);
         res.status(500).send({ err });
     }
 };
@@ -52,14 +52,15 @@ const assign = async (req, res) => {
     try {
         let hero;
         const { heroId, userId } = req.params;
-        if (req.user.isAdmin)
+        const { isAdmin, _id: currentUserId } = req.session.user;
+        if (isAdmin)
             hero = await heroService.assign(heroId, userId);
         else
-            hero = await heroService.assign(heroId, req.user._id);
+            hero = await heroService.assign(heroId, currentUserId);
         res.json(hero);
     }
     catch (err) {
-        logger_service_1.logger.info("Error in assign hero: " + err);
+        logger_service_1.logger.info('Error in assign hero: ' + err);
         res.status(500).send({ err });
     }
 };

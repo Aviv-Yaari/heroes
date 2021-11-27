@@ -1,26 +1,27 @@
 // import dbService from "../../services/db.service";
-import { logger } from "../../services/logger.service";
-import { User, UserModel } from "./user.model";
+import { FilterQuery } from 'mongoose';
+import { logger } from '../../services/logger.service';
+import { User, UserModel } from './user.model';
 
 const add = async (userDetails: User) => {
   try {
     const user = new UserModel(userDetails);
     await user.save();
-    logger.info("New user created: " + user.username);
+    logger.info('New user created: ' + user.username);
   } catch (err) {
-    logger.error("Error in create user: " + err);
+    logger.error('Error in create user: ' + err);
     throw err;
   }
 };
 
-const getByUsername = async (username: string) => {
+const query = async (filter: FilterQuery<User>) => {
   try {
-    const user = await UserModel.findOne({ username });
+    const user = await UserModel.findOne(filter);
     return user;
   } catch (err) {
-    logger.error("Error in get by username: " + err);
+    logger.error('Error in get by username: ' + err);
     throw err;
   }
 };
 
-export const userService = { add, getByUsername };
+export const userService = { add, query };

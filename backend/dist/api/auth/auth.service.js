@@ -4,34 +4,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const logger_service_1 = require("../../services/logger.service");
 const user_service_1 = require("../user/user.service");
 // import logger from '../../services/logger.service';
 const login = async (username, password) => {
     logger_service_1.logger.info(`Login attenpt with username: ${username}`);
-    const user = await user_service_1.userService.getByUsername(username);
+    const user = await user_service_1.userService.query({ username });
     if (!user)
-        throw "Invalid username or password";
+        throw 'Invalid username or password';
     const match = await bcrypt_1.default.compare(password, user.password);
     if (!match)
-        throw "Invalid username or password";
-    const token = jsonwebtoken_1.default.sign({ username }, process.env.JWT_SECRET);
+        throw 'Invalid username or password';
     logger_service_1.logger.info(`Login with username: ${username}`);
-    return token;
+    const { _id, isAdmin } = user;
+    return { _id, isAdmin, username };
 };
-const signup = async (user) => {
-    const { username, password, fullname } = user;
+const signup = async (username, fullname, password) => {
     const saltRounds = 10;
     logger_service_1.logger.debug(`Signup with username: ${username}`);
     if (!username || !password || !fullname)
-        throw "fullname, username and password are required";
+        throw 'fullname, username and password are required';
     const passwordErrors = _checkPassword(password);
     if (passwordErrors.length)
         throw passwordErrors;
-    const existingUser = await user_service_1.userService.getByUsername(username);
+    const existingUser = await user_service_1.userService.query({ username });
     if (existingUser)
-        throw "User already exists";
+        throw 'User already exists';
     const hash = await bcrypt_1.default.hash(password, saltRounds);
     await user_service_1.userService.add({ username, password: hash, fullname, isAdmin: false });
     return { username, password: hash, fullname };
@@ -39,13 +37,13 @@ const signup = async (user) => {
 function _checkPassword(password) {
     const errors = [];
     if (password.length < 8)
-        errors.push("Password must be at least 8 characters long");
+        errors.push('Password must be at least 8 characters long');
     if (!/[A-Z]/.test(password))
-        errors.push("Password must contain a capital letter");
+        errors.push('Password must contain a capital letter');
     if (/^[a-zA-Z0-9]*$/.test(password))
-        errors.push("Password must contain a special character");
+        errors.push('Password must contain a special character');
     if (!/[0-9]/.test(password))
-        errors.push("Password must contain a digit");
+        errors.push('Password must contain a digit');
     return errors;
 }
 exports.default = { login, signup };

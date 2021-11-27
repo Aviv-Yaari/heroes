@@ -9,24 +9,26 @@ const auth_service_1 = __importDefault(require("./auth.service"));
 const login = async (req, res) => {
     const { username, password } = req.body;
     try {
-        const token = await auth_service_1.default.login(username, password);
-        res.send(token);
+        const user = await auth_service_1.default.login(username, password);
+        req.session.user = user;
+        res.send(user);
     }
     catch (err) {
-        logger_service_1.logger.error("Failed to Login " + err);
-        res.status(401).send({ err: "Failed to login: " + err });
+        logger_service_1.logger.error('Failed to Login ' + err);
+        res.status(401).send({ err: 'Failed to login: ' + err });
     }
 };
 exports.login = login;
 const signup = async (req, res) => {
     try {
-        const user = req.body;
-        await auth_service_1.default.signup(user);
-        const token = await auth_service_1.default.login(user.username, user.password);
-        res.send(token);
+        const { username, fullname, password } = req.body;
+        await auth_service_1.default.signup(username, fullname, password);
+        const user = await auth_service_1.default.login(username, password);
+        req.session.user = user;
+        res.send(user);
     }
     catch (err) {
-        logger_service_1.logger.error("Failed to signup: " + err);
+        logger_service_1.logger.error('Failed to signup: ' + err);
         res.status(500).send({ err });
     }
 };
