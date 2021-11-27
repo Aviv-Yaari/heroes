@@ -1,0 +1,12 @@
+.login-signup {
+  background: $clr-light-1;
+  align-items: flex-start;
+  form {
+    margin-top: 10px;
+    background: #fff;
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    gap: 10px;
+  }
+}
