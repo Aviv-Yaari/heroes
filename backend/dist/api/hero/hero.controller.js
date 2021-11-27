@@ -19,7 +19,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.add = exports.getById = exports.getAll = void 0;
+exports.assign = exports.train = exports.add = exports.getById = exports.getAll = void 0;
+const logger_service_1 = require("../../services/logger.service");
 const heroService = __importStar(require("./hero.service"));
 const getAll = async (req, res) => { };
 exports.getAll = getAll;
@@ -31,7 +32,35 @@ const add = async (req, res) => {
         res.json(hero);
     }
     catch (err) {
+        logger_service_1.logger.info("Error in add hero: " + err);
         res.status(500).send({ err });
     }
 };
 exports.add = add;
+const train = async (req, res) => {
+    try {
+        const trainingHistory = await heroService.train(req.params.id);
+        res.json(trainingHistory);
+    }
+    catch (err) {
+        logger_service_1.logger.info("Error in train hero: " + err);
+        res.status(500).send({ err });
+    }
+};
+exports.train = train;
+const assign = async (req, res) => {
+    try {
+        let hero;
+        const { heroId, userId } = req.params;
+        if (req.user.isAdmin)
+            hero = await heroService.assign(heroId, userId);
+        else
+            hero = await heroService.assign(heroId, req.user._id);
+        res.json(hero);
+    }
+    catch (err) {
+        logger_service_1.logger.info("Error in assign hero: " + err);
+        res.status(500).send({ err });
+    }
+};
+exports.assign = assign;

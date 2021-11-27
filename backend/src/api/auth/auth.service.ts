@@ -11,7 +11,7 @@ const login = async (username: string, password: string) => {
   if (!user) throw "Invalid username or password";
   const match = await bcrypt.compare(password, user.password);
   if (!match) throw "Invalid username or password";
-  const token = jwt.sign({ username, password }, <string>process.env.JWT_SECRET);
+  const token = jwt.sign({ username }, <string>process.env.JWT_SECRET);
   logger.info(`Login with username: ${username}`);
   return token;
 };
@@ -26,7 +26,7 @@ const signup = async (user: User) => {
   const existingUser = await userService.getByUsername(username);
   if (existingUser) throw "User already exists";
   const hash = await bcrypt.hash(password, saltRounds);
-  await userService.add({ username, password: hash, fullname });
+  await userService.add({ username, password: hash, fullname, isAdmin: false });
   return { username, password: hash, fullname };
 };
 

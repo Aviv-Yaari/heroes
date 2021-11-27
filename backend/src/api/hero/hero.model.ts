@@ -6,6 +6,7 @@ export interface Hero {
   colors: string[];
   trainingHistory: { [date: string]: number }[];
   userId: ObjectId;
+  currentPower: number;
 }
 
 const schema = new Schema<Hero>({
@@ -14,6 +15,10 @@ const schema = new Schema<Hero>({
   colors: { type: [String] },
   trainingHistory: { type: [Object] },
   userId: { type: Schema.Types.ObjectId, ref: "User" },
+});
+
+schema.virtual("currentPower").get(function (this: Hero) {
+  return this.trainingHistory[0] ? Object.values(this.trainingHistory[0])[0] : 0;
 });
 
 export const HeroModel = model<Hero>("Hero", schema);

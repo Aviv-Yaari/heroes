@@ -9,4 +9,7 @@ const schema = new mongoose_1.Schema({
     trainingHistory: { type: [Object] },
     userId: { type: mongoose_1.Schema.Types.ObjectId, ref: "User" },
 });
+schema.virtual("currentPower").get(function () {
+    return this.trainingHistory[0] ? Object.values(this.trainingHistory[0])[0] : 0;
+});
 exports.HeroModel = (0, mongoose_1.model)("Hero", schema);

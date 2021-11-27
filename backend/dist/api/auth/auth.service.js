@@ -16,7 +16,7 @@ const login = async (username, password) => {
     const match = await bcrypt_1.default.compare(password, user.password);
     if (!match)
         throw "Invalid username or password";
-    const token = jsonwebtoken_1.default.sign({ username, password }, process.env.JWT_SECRET);
+    const token = jsonwebtoken_1.default.sign({ username }, process.env.JWT_SECRET);
     logger_service_1.logger.info(`Login with username: ${username}`);
     return token;
 };
@@ -33,7 +33,7 @@ const signup = async (user) => {
     if (existingUser)
         throw "User already exists";
     const hash = await bcrypt_1.default.hash(password, saltRounds);
-    await user_service_1.userService.add({ username, password: hash, fullname });
+    await user_service_1.userService.add({ username, password: hash, fullname, isAdmin: false });
     return { username, password: hash, fullname };
 };
 function _checkPassword(password) {

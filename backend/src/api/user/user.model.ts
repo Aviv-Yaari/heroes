@@ -4,7 +4,8 @@ export interface User {
   username: string;
   password: string;
   fullname: string;
-  heroIds: ObjectId[];
+  heroIds?: ObjectId[];
+  isAdmin?: boolean;
 }
 
 const schema = new Schema<User>({
@@ -12,6 +13,7 @@ const schema = new Schema<User>({
   password: { type: String, required: true },
   fullname: { type: String, required: true },
   heroIds: [{ type: Schema.Types.ObjectId, ref: "Hero" }],
+  isAdmin: { type: Boolean, default: false },
 });
 
 export const UserModel = model<User>("User", schema);
