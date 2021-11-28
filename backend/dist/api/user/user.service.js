@@ -20,7 +20,7 @@ const query = async (filter) => {
         return user;
     }
     catch (err) {
-        logger_service_1.logger.error('Error in get by username: ' + err);
+        logger_service_1.logger.error('Error in query users: ' + err);
         throw err;
     }
 };

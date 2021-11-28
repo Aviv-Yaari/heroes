@@ -22,7 +22,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.assign = exports.train = exports.add = exports.getById = exports.getAll = void 0;
 const logger_service_1 = require("../../services/logger.service");
 const heroService = __importStar(require("./hero.service"));
-const getAll = async (req, res) => { };
+const getAll = async (req, res) => {
+    try {
+        const heroes = await heroService.query(req.query);
+        res.json(heroes);
+    }
+    catch (err) {
+        logger_service_1.logger.error('Error in get heroes: ' + err);
+        res.status(500).send({ err });
+    }
+};
 exports.getAll = getAll;
 const getById = async (req, res) => { };
 exports.getById = getById;
@@ -32,18 +41,18 @@ const add = async (req, res) => {
         res.json(hero);
     }
     catch (err) {
-        logger_service_1.logger.info('Error in add hero: ' + err);
+        logger_service_1.logger.error('Error in add hero: ' + err);
         res.status(500).send({ err });
     }
 };
 exports.add = add;
 const train = async (req, res) => {
     try {
-        const trainingHistory = await heroService.train(req.params.id);
-        res.json(trainingHistory);
+        const hero = await heroService.train(req.params.id);
+        res.json(hero);
     }
     catch (err) {
-        logger_service_1.logger.info('Error in train hero: ' + err);
+        logger_service_1.logger.error('Error in train hero: ' + err);
         res.status(500).send({ err });
     }
 };
@@ -60,7 +69,7 @@ const assign = async (req, res) => {
         res.json(hero);
     }
     catch (err) {
-        logger_service_1.logger.info('Error in assign hero: ' + err);
+        logger_service_1.logger.error('Error in assign hero: ' + err);
         res.status(500).send({ err });
     }
 };

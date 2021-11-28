@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const logger_service_1 = require("../../services/logger.service");
 const user_service_1 = require("../user/user.service");
-// import logger from '../../services/logger.service';
 const login = async (username, password) => {
     logger_service_1.logger.info(`Login attenpt with username: ${username}`);
     const user = await user_service_1.userService.query({ username });
@@ -16,8 +15,8 @@ const login = async (username, password) => {
     if (!match)
         throw 'Invalid username or password';
     logger_service_1.logger.info(`Login with username: ${username}`);
-    const { _id, isAdmin } = user;
-    return { _id, isAdmin, username };
+    user.password = '';
+    return user;
 };
 const signup = async (username, fullname, password) => {
     const saltRounds = 10;

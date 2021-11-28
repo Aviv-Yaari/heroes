@@ -19,7 +19,7 @@ const query = async (filter: FilterQuery<User>) => {
     const user = await UserModel.findOne(filter);
     return user;
   } catch (err) {
-    logger.error('Error in get by username: ' + err);
+    logger.error('Error in query users: ' + err);
     throw err;
   }
 };

@@ -5,7 +5,7 @@ import { getAll, getById, add, train, assign } from './hero.controller';
 
 const router = express.Router();
 
-router.get('/', getAll);
+router.get('/', requireAuth, getAll);
 router.get('/:id', getById);
 router.post('/', requireAuth, requireAdmin, add);
 router.put('/:id/train', requireAuth, train);

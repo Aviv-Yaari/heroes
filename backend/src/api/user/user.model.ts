@@ -4,8 +4,8 @@ export interface User {
   username: string;
   password: string;
   fullname: string;
-  heroIds?: ObjectId[];
-  isAdmin?: boolean;
+  heroes?: ObjectId[];
+  isAdmin: boolean;
 }
 
 export interface MiniUser {
@@ -18,7 +18,7 @@ const schema = new Schema<User>({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   fullname: { type: String, required: true },
-  heroIds: [{ type: Schema.Types.ObjectId, ref: 'Hero' }],
+  heroes: [{ type: Schema.Types.ObjectId, ref: 'Hero' }],
   isAdmin: { type: Boolean, default: false },
 });
 

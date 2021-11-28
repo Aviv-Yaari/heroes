@@ -1,8 +1,6 @@
 import bcrypt from 'bcrypt';
 import { logger } from '../../services/logger.service';
-import { User } from '../user/user.model';
 import { userService } from '../user/user.service';
-// import logger from '../../services/logger.service';
 
 const login = async (username: string, password: string) => {
   logger.info(`Login attenpt with username: ${username}`);
@@ -11,8 +9,8 @@ const login = async (username: string, password: string) => {
   const match = await bcrypt.compare(password, user.password);
   if (!match) throw 'Invalid username or password';
   logger.info(`Login with username: ${username}`);
-  const { _id, isAdmin } = user;
-  return { _id, isAdmin, username };
+  user.password = '';
+  return user;
 };
 
 const signup = async (username: string, fullname: string, password: string) => {
