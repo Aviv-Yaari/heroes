@@ -36,6 +36,10 @@ else {
 app.use('/api/auth', auth_routes_1.default);
 app.use('/api/hero', hero_routes_1.default);
 mongoose_1.default.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jxpry.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`);
+app.get('/**', (req, res) => {
+    res.sendFile(path_1.default.join(__dirname, 'public', 'index.html'));
+});
 app.listen(port, () => {
+    console.log(path_1.default.join(__dirname, 'public', 'index.html'));
     logger_service_1.logger.info('Server is running on port: ' + port);
 });
