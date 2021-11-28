@@ -28,6 +28,17 @@ export const signup: RequestHandler = async (req, res) => {
   }
 };
 
+export const logout: RequestHandler = async (req, res) => {
+  try {
+    req.session.destroy(() => {
+      res.send('Logged out');
+    });
+  } catch (err) {
+    logger.error('Failed to logout: ' + err);
+    res.status(500).send({ err });
+  }
+};
+
 export const getLoggedInUser: RequestHandler = async (req, res) => {
   const { user } = req.session;
   if (!user) return res.send(null);

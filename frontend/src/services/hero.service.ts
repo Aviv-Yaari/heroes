@@ -1,6 +1,22 @@
 import { httpService } from './http.service';
 
-export const query = async (filter: { [key: string]: any }) => {
+export interface Hero {
+  _id: string;
+  name: string;
+  ability: 'attacker' | 'defender';
+  colors: string[];
+  trainingHistory: { date: number; power: number }[];
+  currentPower: number;
+  trainsToday: number;
+  userId: string;
+  price: number;
+}
+
+// export interface PopulatedHero extends Omit<Hero, 'userId'> {
+//   userId: { _id: string; username: string };
+// }
+
+export const query = async (filter?: { [key: string]: any }) => {
   const params = new URLSearchParams();
   for (const key in filter) {
     params.append(key, filter[key]);
@@ -14,4 +30,13 @@ export const train = async (heroId: string) => {
   return hero;
 };
 
-export const heroService = { query, train };
+export const buy = async (heroId: string) => {
+  const hero = await httpService.put(`hero/${heroId}/assign`);
+  return hero;
+};
+
+export const add = async (hero: object) => {
+  await httpService.post('hero', hero);
+};
+
+export const heroService = { query, train, buy, add };

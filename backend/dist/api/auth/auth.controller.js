@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLoggedInUser = exports.signup = exports.login = void 0;
+exports.getLoggedInUser = exports.logout = exports.signup = exports.login = void 0;
 const logger_service_1 = require("../../services/logger.service");
 const auth_service_1 = __importDefault(require("./auth.service"));
 const user_service_1 = require("../user/user.service");
@@ -34,6 +34,18 @@ const signup = async (req, res) => {
     }
 };
 exports.signup = signup;
+const logout = async (req, res) => {
+    try {
+        req.session.destroy(() => {
+            res.send('Logged out');
+        });
+    }
+    catch (err) {
+        logger_service_1.logger.error('Failed to logout: ' + err);
+        res.status(500).send({ err });
+    }
+};
+exports.logout = logout;
 const getLoggedInUser = async (req, res) => {
     const { user } = req.session;
     if (!user)

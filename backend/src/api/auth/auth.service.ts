@@ -22,7 +22,7 @@ const signup = async (username: string, fullname: string, password: string) => {
   const existingUser = await userService.query({ username });
   if (existingUser) throw 'User already exists';
   const hash = await bcrypt.hash(password, saltRounds);
-  await userService.add({ username, password: hash, fullname, isAdmin: false });
+  await userService.add({ username, password: hash, fullname, isAdmin: false, money: 0 });
   return { username, password: hash, fullname };
 };
 

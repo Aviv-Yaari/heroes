@@ -3,7 +3,7 @@ interface Props {
 }
 
 export function ErrorMessage({ message }: Props) {
-  const lines = message.split("<br>");
+  const lines = message.split('<br>');
   return (
     <section className="error-message">
       {lines.map((line, idx) => (

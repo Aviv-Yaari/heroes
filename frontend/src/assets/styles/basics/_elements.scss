@@ -24,7 +24,6 @@ button {
   &:hover {
     background: $clr-primary-2;
   }
-
   &.btn-link {
     background: transparent;
     padding: 0 5px;
@@ -33,5 +32,22 @@ button {
     &:hover {
       color: $clr-primary-2;
     }
+  }
+  &.disabled {
+    pointer-events: none;
+    filter: opacity(0.5);
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  background: $clr-light-1;
+  align-items: flex-start;
+  .content {
+    margin-top: 10px;
+    background: #fff;
+    padding: 1.5em;
+    width: 100%;
   }
 }

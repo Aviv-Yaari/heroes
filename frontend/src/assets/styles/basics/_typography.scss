@@ -2,6 +2,10 @@ body {
   font-family: Roboto, sans-serif;
   color: $clr-dark-1;
   line-height: 1.5;
+  font-size: rem(14px);
+  @include for-normal-layout {
+    font-size: 1rem;
+  }
 }
 
 h2 {

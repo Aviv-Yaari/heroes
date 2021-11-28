@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { login, signup } from '../store/user.actions';
 
-export function LoginSignup() {
+export function AuthPage() {
   const [page, setPage] = useState<'login' | 'signup'>('login');
   const [values, setValues] = useState({ username: '', fullname: '', password: '' });
   const [error, setError] = useState('');
@@ -35,8 +35,8 @@ export function LoginSignup() {
   };
 
   return (
-    <div className="login-signup flex justify-center">
-      <form className="flex column align-center" onSubmit={handleSubmit}>
+    <div className="container">
+      <form className="content flex column align-center auth-page" onSubmit={handleSubmit}>
         {error && <ErrorMessage message={error} />}
         <h2>{page.charAt(0).toUpperCase() + page.slice(1)} to Heroes</h2>
         <input name="username" type="text" placeholder="Username" value={values.username} onChange={handleChange} />
@@ -62,6 +62,9 @@ export function LoginSignup() {
         )}
         <button type="button" className="btn-link" onClick={() => dispatch(login('avivyar', 'Aviv!!1234'))}>
           Easy login - dev porpuses
+        </button>
+        <button type="button" className="btn-link" onClick={() => dispatch(login('admin', 'Admin!!1234'))}>
+          Easy admin login - dev porpuses
         </button>
       </form>
     </div>

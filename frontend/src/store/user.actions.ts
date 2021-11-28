@@ -11,6 +11,16 @@ export const login = (username: string, password: string) => {
   };
 };
 
+export const logout = () => {
+  return async (dispatch: Dispatch) => {
+    await userService.logout();
+    dispatch({
+      type: 'SET_USER',
+      user: null,
+    });
+  };
+};
+
 export const signup = (username: string, fullname: string, password: string) => {
   return async (dispatch: Dispatch) => {
     const user = await userService.signup(username, fullname, password);

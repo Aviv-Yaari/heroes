@@ -1,0 +1,44 @@
+.add-page {
+  max-width: 450px;
+  gap: 20px;
+
+  h2 {
+    text-align: center;
+  }
+
+  input {
+    margin: 3px 0;
+  }
+
+  .ability {
+    gap: 10px;
+    > * {
+      flex-basis: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      &.selected {
+        background: $clr-light-1;
+        pointer-events: none;
+      }
+      svg {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  }
+
+  .color-list {
+    gap: 5px;
+    .color {
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      &.selected {
+        background-color: $clr-light-1;
+      }
+    }
+  }
+}

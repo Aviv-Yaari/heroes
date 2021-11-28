@@ -6,6 +6,7 @@ export interface User {
   fullname: string;
   heroes?: ObjectId[];
   isAdmin: boolean;
+  money: number;
 }
 
 export interface MiniUser {
@@ -20,6 +21,7 @@ const schema = new Schema<User>({
   fullname: { type: String, required: true },
   heroes: [{ type: Schema.Types.ObjectId, ref: 'Hero' }],
   isAdmin: { type: Boolean, default: false },
+  money: { type: Number, default: 0 },
 });
 
 export const UserModel = model<User>('User', schema);

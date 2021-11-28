@@ -8,5 +8,6 @@ const schema = new mongoose_1.Schema({
     fullname: { type: String, required: true },
     heroes: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'Hero' }],
     isAdmin: { type: Boolean, default: false },
+    money: { type: Number, default: 0 },
 });
 exports.UserModel = (0, mongoose_1.model)('User', schema);

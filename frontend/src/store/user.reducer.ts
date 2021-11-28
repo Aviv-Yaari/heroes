@@ -1,13 +1,5 @@
 import { Action } from 'redux';
-
-export interface Hero {
-  _id: string;
-  name: string;
-  ability: 'attacker' | 'defender';
-  colors: string[];
-  trainingHistory: { [date: string]: number }[];
-  currentPower: string | number;
-}
+import { Hero } from '../services/hero.service';
 
 export interface User {
   _id: string;
@@ -15,6 +7,7 @@ export interface User {
   fullname: string;
   heroes: string[];
   isAdmin: false;
+  money: number;
 }
 
 interface IAction extends Action {

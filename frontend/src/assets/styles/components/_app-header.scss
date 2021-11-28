@@ -1,0 +1,16 @@
+.app-header {
+  padding: 1.5em;
+  border-bottom: 1px solid $clr-primary-3;
+  > * {
+    gap: 1em;
+  }
+  h1 {
+    cursor: default;
+    font-weight: 700;
+  }
+  .icon-coin {
+    width: 22px;
+    height: 22px;
+    margin: 0 4px;
+  }
+}

@@ -15,7 +15,7 @@ async function ajax(endpoint: string, method: Method = 'GET', data: {} | null = 
     });
     return res.data;
   } catch (err) {
-    console.log(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: ${data}`);
+    console.dir(err);
     throw (err as AxiosError).response?.data.err;
   }
 }

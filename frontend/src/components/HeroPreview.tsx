@@ -1,24 +1,54 @@
-import { formatDistanceToNow } from 'date-fns';
-import { useMemo } from 'react';
-import { Hero } from '../store/user.reducer';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { Hero } from '../services/hero.service';
+import { ReactComponent as IconAttack } from '../assets/images/attack.svg';
+import { ReactComponent as IconDefense } from '../assets/images/defense.svg';
+import { ReactComponent as IconCoin } from '../assets/images/coin.svg';
+import { useNavigate } from 'react-router';
 
 interface Props {
   hero: Hero;
-  onTrain: Function; // TODO - be more specific
+  type: 'Explore' | 'My Heroes';
+  onTrain?: Function; // TODO - be more specific
+  onBuy?: Function; // TODO - be more specific
 }
 
-export function HeroPreview({ hero, onTrain }: Props) {
-  const { _id, name, ability, currentPower, trainingHistory } = hero;
-  const dateStarted = +Object.keys(trainingHistory[trainingHistory.length - 1])[0];
+export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
+  const { _id, name, ability, currentPower, userId, price, trainsToday } = hero;
+  const currentUser = useSelector((state: RootState) => state.userModule.user);
+  const navigate = useNavigate();
 
   return (
-    <li className="hero" key={_id}>
-      <h3>{name}</h3>
-      <p>{ability}</p>
-      <p>Started training {formatDistanceToNow(dateStarted, { addSuffix: true })}</p>
-      <p>Power from last training: {Object.values(trainingHistory[1])[0]}</p>
-      <p>Power:{currentPower}</p>
-      <button onClick={() => onTrain(_id)}>Train</button>
+    <li className="hero-preview flex column" key={_id} onClick={() => navigate(`/hero/${_id}`)}>
+      <div className="flex space-between">
+        {ability === 'attacker' ? <IconAttack className="img-ability" /> : <IconDefense className="img-ability" />}
+        <span>{name}</span>
+        <span>{currentPower}</span>
+      </div>
+      <img className="img-hero" src={`https://robohash.org/${name}?size=200x200`} alt="" />
+      <div className="actions">
+        {!userId && onBuy && (
+          <button
+            className={`flex align-center justify-center ${currentUser.money < hero.price ? 'disabled' : ''}`}
+            onClick={ev => {
+              ev.stopPropagation();
+              onBuy(_id);
+            }}>
+            <span>Buy </span>
+            <IconCoin className="icon-coin" />
+            <span>{price || 'Free'}</span>
+          </button>
+        )}
+        {onTrain && (
+          <button
+            onClick={ev => {
+              ev.stopPropagation();
+              onTrain(_id);
+            }}>
+            Train {trainsToday}/5
+          </button>
+        )}
+      </div>
     </li>
   );
 }

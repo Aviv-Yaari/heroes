@@ -1,16 +1,18 @@
-import { Hero } from '../store/user.reducer';
+import { Hero } from '../services/hero.service';
 import { HeroPreview } from './HeroPreview';
 
 interface Props {
   heroes: Hero[];
-  onTrain: Function;
+  onTrain?: Function;
+  onBuy?: Function;
+  type: 'Explore' | 'My Heroes';
 }
 
-export function HeroList({ heroes, onTrain }: Props) {
+export function HeroList({ heroes, type, onTrain, onBuy }: Props) {
   return (
     <ul className="hero-list">
       {heroes.map(hero => (
-        <HeroPreview key={hero._id} hero={hero} onTrain={onTrain} />
+        <HeroPreview key={hero._id} hero={hero} type={type} onTrain={onTrain} onBuy={onBuy} />
       ))}
     </ul>
   );

@@ -1,18 +1,26 @@
 // Setup
-@import "setup/variables";
-@import "setup/functions";
-@import "setup/mixins";
+@import 'setup/variables';
+@import 'setup/functions';
+@import 'setup/mixins';
 
 // Basics
-@import "basics/helpers";
-@import "basics/base";
-@import "basics/typography";
-@import "basics/layout";
-@import "basics/elements";
+@import 'basics/helpers';
+@import 'basics/base';
+@import 'basics/typography';
+@import 'basics/layout';
+@import 'basics/elements';
 
 // Pages
-@import "pages/login-signup";
+@import 'pages/auth-page';
+@import 'pages/heroes-page';
+@import 'pages/hero-page';
+@import 'pages/explore-page';
+@import 'pages/add-page';
 
 // Componenets
-@import "components/app-footer";
-@import "components/error-message";
+@import 'components/app-header';
+@import 'components/app-footer';
+@import 'components/error-message';
+@import 'components/hero-list';
+@import 'components/hero-preview';
+@import 'components/hero-details';

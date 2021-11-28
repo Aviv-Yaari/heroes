@@ -1,0 +1,5 @@
+.hero-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, auto));
+  gap: 20px;
+}

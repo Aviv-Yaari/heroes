@@ -9,4 +9,5 @@ const router = express_1.default.Router();
 router.get('/current', auth_controller_1.getLoggedInUser);
 router.post('/login', auth_controller_1.login);
 router.post('/signup', auth_controller_1.signup);
+router.post('/logout', auth_controller_1.logout);
 exports.default = router;

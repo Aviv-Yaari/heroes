@@ -4,9 +4,10 @@ import { ErrorMessage } from '../components/ErrorMessage';
 import { HeroList } from '../components/HeroList';
 import { heroService } from '../services/hero.service';
 import { RootState } from '../store/store';
-import { Hero } from '../store/user.reducer';
+import { Hero } from '../services/hero.service';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
-export function MyHeroes() {
+export function HeroesPage() {
   const user = useSelector((state: RootState) => state.userModule.user);
   const [heroes, setHeroes] = useState<Hero[] | null>(null);
   const [error, setError] = useState('');
@@ -32,12 +33,14 @@ export function MyHeroes() {
     }
   };
 
-  if (!heroes) return <div>Loading...</div>;
+  if (!heroes) return <LoadingSpinner />;
   return (
-    <main>
-      {error && <ErrorMessage message={error} />}
-      {heroes.length === 0 && <div>No heroes to show</div>}
-      {heroes.length > 0 && <HeroList heroes={heroes} onTrain={handleTrain} />}
+    <main className="container">
+      <div className="content heroes-page">
+        {error && <ErrorMessage message={error} />}
+        {heroes.length === 0 && <div>No heroes to show</div>}
+        {heroes.length > 0 && <HeroList heroes={heroes} type="My Heroes" onTrain={handleTrain} />}
+      </div>
     </main>
   );
 }

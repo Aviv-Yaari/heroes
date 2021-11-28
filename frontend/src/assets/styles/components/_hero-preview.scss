@@ -1,0 +1,29 @@
+.hero-preview {
+  border: 1px solid $clr-light-1;
+  padding: 10px;
+  box-shadow: 0 0 1px 0 #aaa;
+  gap: 20px;
+
+  .img-hero {
+    border-radius: 50%;
+    box-shadow: 0 0 11px 0px #f3f3f3;
+  }
+
+  .img-ability {
+    width: 20px;
+    height: 20px;
+  }
+
+  .actions {
+    margin-top: auto;
+    button {
+      width: 100%;
+    }
+  }
+
+  .icon-coin {
+    width: 15px;
+    height: 15px;
+    margin: 0 2px 0 5px;
+  }
+}

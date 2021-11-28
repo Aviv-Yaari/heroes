@@ -30,7 +30,7 @@ const signup = async (username, fullname, password) => {
     if (existingUser)
         throw 'User already exists';
     const hash = await bcrypt_1.default.hash(password, saltRounds);
-    await user_service_1.userService.add({ username, password: hash, fullname, isAdmin: false });
+    await user_service_1.userService.add({ username, password: hash, fullname, isAdmin: false, money: 0 });
     return { username, password: hash, fullname };
 };
 function _checkPassword(password) {

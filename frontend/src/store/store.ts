@@ -1,6 +1,8 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { Hero, User, userReducer } from './user.reducer';
+import { Hero } from '../services/hero.service';
+import { User, userReducer } from './user.reducer';
+
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
