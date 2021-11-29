@@ -18,33 +18,37 @@ export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
   const currentUser = useSelector((state: RootState) => state.userModule.user);
   const navigate = useNavigate();
 
+  const handleBuy: React.MouseEventHandler = ev => {
+    ev.stopPropagation();
+    onBuy!(_id);
+  };
+
+  const handleTrain: React.MouseEventHandler = ev => {
+    ev.stopPropagation();
+    onTrain!(_id);
+  };
+
   return (
     <li className="hero-preview flex column" key={_id} onClick={() => navigate(`/hero/${_id}`)}>
       <div className="flex space-between">
         {ability === 'attacker' ? <IconAttack className="img-ability" /> : <IconDefense className="img-ability" />}
         <span>{name}</span>
-        <span>{currentPower}</span>
+        <span className="fw-700">{currentPower}</span>
       </div>
       <img className="img-hero" src={`https://robohash.org/${name}?size=200x200`} alt="" />
+      {userId && <p className="text-center">Owned by {userId.username}</p>}
       <div className="actions">
         {!userId && onBuy && (
           <button
             className={`flex align-center justify-center ${currentUser.money < hero.price ? 'disabled' : ''}`}
-            onClick={ev => {
-              ev.stopPropagation();
-              onBuy(_id);
-            }}>
+            onClick={handleBuy}>
             <span>Buy </span>
             <IconCoin className="icon-coin" />
             <span>{price || 'Free'}</span>
           </button>
         )}
         {onTrain && (
-          <button
-            onClick={ev => {
-              ev.stopPropagation();
-              onTrain(_id);
-            }}>
+          <button className={trainsToday === 5 ? 'disabled' : ''} onClick={handleTrain}>
             Train {trainsToday}/5
           </button>
         )}

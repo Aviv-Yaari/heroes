@@ -1,27 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ErrorMessage } from '../components/ErrorMessage';
 import { HeroList } from '../components/HeroList';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { heroService } from '../services/hero.service';
 import { Hero } from '../services/hero.service';
 import { RootState } from '../store/store';
+import { setAlert } from '../store/system.actions';
 import { getCurrentUser } from '../store/user.actions';
 
 export function ExplorePage() {
   const [heroes, setHeroes] = useState<Hero[] | null>(null);
-  const [error, setError] = useState('');
   const user = useSelector((state: RootState) => state.userModule.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getHeroes = async () => {
       const heroes = await heroService.query();
-      setHeroes(heroes);
+      const excludingUser = heroes.filter(hero => hero.userId?._id !== user._id);
+      setHeroes(excludingUser);
     };
     getHeroes();
-  }, []);
+  }, [user._id]);
 
   const handleBuy = async (heroId: string) => {
     try {
@@ -29,7 +29,7 @@ export function ExplorePage() {
       setHeroes(heroes => heroes!.map(hero => (hero._id === updatedHero._id ? updatedHero : hero)));
       dispatch(getCurrentUser());
     } catch (err) {
-      setError(err as string);
+      dispatch(setAlert({ message: err as string, type: 'error' }));
     }
   };
 
@@ -38,7 +38,6 @@ export function ExplorePage() {
     <>
       <div className="container">
         <main className="content explore-page">
-          {error && <ErrorMessage message={error} />}
           {user.isAdmin && (
             <button>
               <Link to="/add">Add</Link>

@@ -8,7 +8,7 @@ export interface Hero {
   trainingHistory: { date: number; power: number }[];
   currentPower: number;
   trainsToday: number;
-  userId: string;
+  userId?: { _id: string; username: string };
   price: number;
 }
 
@@ -22,7 +22,7 @@ export const query = async (filter?: { [key: string]: any }) => {
     params.append(key, filter[key]);
   }
   const heroes = await httpService.get('hero', params);
-  return heroes;
+  return heroes as Hero[];
 };
 
 export const train = async (heroId: string) => {

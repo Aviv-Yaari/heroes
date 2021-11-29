@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ErrorMessage } from '../components/ErrorMessage';
+import { setAlert } from '../store/system.actions';
 import { login, signup } from '../store/user.actions';
 
 export function AuthPage() {
   const [page, setPage] = useState<'login' | 'signup'>('login');
   const [values, setValues] = useState({ username: '', fullname: '', password: '' });
-  const [error, setError] = useState('');
   const dispatch = useDispatch();
 
   const handleChangePage = () => {
     if (page === 'login') setPage('signup');
     else setPage('login');
-    setError('');
     setValues({ username: '', fullname: '', password: '' });
   };
 
@@ -26,18 +24,19 @@ export function AuthPage() {
     try {
       if (page === 'login') {
         await dispatch(login(username, password));
+        dispatch(setAlert({ message: 'Logged in successfuly', type: 'success' }));
       } else {
         await dispatch(signup(username, fullname, password));
+        dispatch(setAlert({ message: 'Signed up successfuly', type: 'success' }));
       }
     } catch (err) {
-      setError(err as string);
+      dispatch(setAlert({ message: err as string, type: 'error' }));
     }
   };
 
   return (
     <div className="container">
       <form className="content flex column align-center auth-page" onSubmit={handleSubmit}>
-        {error && <ErrorMessage message={error} />}
         <h2>{page.charAt(0).toUpperCase() + page.slice(1)} to Heroes</h2>
         <input name="username" type="text" placeholder="Username" value={values.username} onChange={handleChange} />
         <input name="password" type="password" placeholder="Password" value={values.password} onChange={handleChange} />

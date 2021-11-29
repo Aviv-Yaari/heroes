@@ -22,9 +22,7 @@ const initialState = {
 export function userReducer(state = initialState, action: IAction) {
   switch (action.type) {
     case 'SET_USER':
-      return { user: action.user };
-    case 'SET_HEROES':
-      return { heroes: action.heroes };
+      return { ...state, user: action.user };
     default:
       return state;
   }

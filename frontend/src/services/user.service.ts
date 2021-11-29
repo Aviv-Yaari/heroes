@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import { httpService } from './http.service';
 
 export const login = async (username: string, password: string) => {
@@ -15,9 +14,11 @@ export const signup = async (username: string, fullname: string, password: strin
     const user = await httpService.post('auth/signup', { username, fullname, password });
     return user;
   } catch (err) {
-    const errInfo = (err as AxiosError).response?.data.err;
-    if (Array.isArray(errInfo)) throw errInfo.join('<br>');
-    throw errInfo;
+    const parsed = JSON.parse(err as string);
+    if (Array.isArray(parsed)) {
+      throw parsed.join(', ');
+    }
+    throw err;
   }
 };
 

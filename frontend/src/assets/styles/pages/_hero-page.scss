@@ -1,3 +1,9 @@
 .hero-page {
-  max-width: 600px;
+  max-width: 300px;
+  @include for-narrow-layout {
+    max-width: 400px;
+  }
+  @include for-normal-layout {
+    max-width: 600px;
+  }
 }
