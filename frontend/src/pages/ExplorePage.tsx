@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { HeroFilter } from '../components/HeroFilter';
 import { HeroList } from '../components/HeroList';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { heroService } from '../services/hero.service';
@@ -40,18 +41,17 @@ export function ExplorePage() {
 
   if (!heroes) return <LoadingSpinner />;
   return (
-    <>
-      <div className="container">
-        <main className="content explore-page">
-          <h2>Explore</h2>
-          {user.isAdmin && (
-            <button>
-              <Link to="/add">Add</Link>
-            </button>
-          )}
-          <HeroList heroes={heroes} type="Explore" onBuy={handleBuy} />
-        </main>
-      </div>
-    </>
+    <div className="container">
+      <main className="content explore-page">
+        <h2>Explore</h2>
+        <HeroFilter />
+        {user.isAdmin && (
+          <button>
+            <Link to="/add">Add</Link>
+          </button>
+        )}
+        <HeroList heroes={heroes} type="Explore" onBuy={handleBuy} />
+      </main>
+    </div>
   );
 }
