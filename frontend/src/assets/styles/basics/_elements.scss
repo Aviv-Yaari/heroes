@@ -34,8 +34,8 @@ button {
     }
   }
   &.disabled {
-    pointer-events: none;
     filter: opacity(0.5);
+    cursor: default;
   }
 }
 
@@ -49,10 +49,22 @@ button {
     background: #fff;
     padding: 1.5em;
     width: 100%;
+    h2 {
+      margin-bottom: 10px;
+      text-align: center;
+    }
   }
 }
 
 .overlay {
   inset: 0;
   position: fixed;
+}
+
+a {
+  color: $clr-primary-1;
+  &.active,
+  &:hover {
+    color: $clr-primary-2;
+  }
 }

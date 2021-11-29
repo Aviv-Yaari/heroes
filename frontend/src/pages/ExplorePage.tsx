@@ -16,18 +16,23 @@ export function ExplorePage() {
 
   useEffect(() => {
     const getHeroes = async () => {
-      const heroes = await heroService.query();
-      const excludingUser = heroes.filter(hero => hero.userId?._id !== user._id);
-      setHeroes(excludingUser);
+      try {
+        const heroes = await heroService.query();
+        const excludingUser = heroes.filter(hero => hero.userId?._id !== user._id);
+        setHeroes(excludingUser);
+      } catch (err) {
+        dispatch(setAlert({ message: 'Could not get hero data', type: 'error' }));
+      }
     };
     getHeroes();
-  }, [user._id]);
+  }, [dispatch, user._id]);
 
   const handleBuy = async (heroId: string) => {
     try {
       const updatedHero = await heroService.buy(heroId);
       setHeroes(heroes => heroes!.map(hero => (hero._id === updatedHero._id ? updatedHero : hero)));
       dispatch(getCurrentUser());
+      dispatch(setAlert({ message: 'Bought ' + updatedHero.name, type: 'success' }));
     } catch (err) {
       dispatch(setAlert({ message: err as string, type: 'error' }));
     }
@@ -38,6 +43,7 @@ export function ExplorePage() {
     <>
       <div className="container">
         <main className="content explore-page">
+          <h2>Explore</h2>
           {user.isAdmin && (
             <button>
               <Link to="/add">Add</Link>

@@ -15,7 +15,7 @@ export function HeroDetails({ hero }: Props) {
         <HeroField name="Name" value={name} />
         <HeroField name="Ability" value={ability} />
         <HeroField
-          name="Training since"
+          name="Started training at"
           value={dateStarted ? formatDistanceToNow(dateStarted, { addSuffix: true }) : 'None'}
         />
         <HeroField name="Suit colors" value={colors.join(', ') || 'None'} />

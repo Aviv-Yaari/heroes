@@ -23,10 +23,10 @@ export function AuthPage() {
     const { username, fullname, password } = values;
     try {
       if (page === 'login') {
-        await dispatch(login(username, password));
+        dispatch(login(username, password));
         dispatch(setAlert({ message: 'Logged in successfuly', type: 'success' }));
       } else {
-        await dispatch(signup(username, fullname, password));
+        dispatch(signup(username, fullname, password));
         dispatch(setAlert({ message: 'Signed up successfuly', type: 'success' }));
       }
     } catch (err) {

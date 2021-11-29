@@ -6,7 +6,7 @@ import { getAll, getById, add, train, assign } from './hero.controller';
 
 const router = express.Router();
 
-router.get('/', requireAuth, catchAsync(getAll));
+router.get('/', catchAsync(getAll));
 router.get('/:id', catchAsync(getById));
 router.post('/', requireAdmin, catchAsync(add));
 router.put('/:id/train', requireAuth, catchAsync(train));

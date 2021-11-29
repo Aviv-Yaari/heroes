@@ -22,7 +22,7 @@ export function MyHeroesPage() {
       }
     };
     getHeroes();
-  }, [user._id]);
+  }, [dispatch, user._id]);
 
   const handleTrain = async (heroId: string) => {
     try {
@@ -37,6 +37,7 @@ export function MyHeroesPage() {
   return (
     <main className="container">
       <div className="content my-heroes-page">
+        <h2 className="text-center">My heroes</h2>
         {heroes.length === 0 && <div>You don't own any heroes yet.</div>}
         {heroes.length > 0 && <HeroList heroes={heroes} type="My Heroes" onTrain={handleTrain} />}
       </div>

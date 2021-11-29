@@ -26,4 +26,7 @@ schema.virtual('trainsToday').get(function () {
 });
 schema.set('toObject', { virtuals: true });
 schema.set('toJSON', { virtuals: true });
+schema.pre('find', function () {
+    this.populate('userId', 'username');
+});
 exports.HeroModel = (0, mongoose_1.model)('Hero', schema);

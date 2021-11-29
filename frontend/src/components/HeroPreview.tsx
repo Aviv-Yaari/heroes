@@ -5,6 +5,7 @@ import { ReactComponent as IconAttack } from '../assets/images/attack.svg';
 import { ReactComponent as IconDefense } from '../assets/images/defense.svg';
 import { ReactComponent as IconCoin } from '../assets/images/coin.svg';
 import { useNavigate } from 'react-router';
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 
 interface Props {
   hero: Hero;
@@ -14,33 +15,35 @@ interface Props {
 }
 
 export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
-  const { _id, name, ability, currentPower, userId, price, trainsToday } = hero;
+  const { _id, name, ability, currentPower, userId, price, trainsToday, trainingHistory } = hero;
   const currentUser = useSelector((state: RootState) => state.userModule.user);
   const navigate = useNavigate();
+  const isTrainingLimit = trainsToday === 5;
+  const isNotEnoughMoney = currentUser.money < hero.price;
 
   const handleBuy: React.MouseEventHandler = ev => {
     ev.stopPropagation();
-    onBuy!(_id);
+    if (!isNotEnoughMoney) onBuy!(_id);
   };
 
   const handleTrain: React.MouseEventHandler = ev => {
     ev.stopPropagation();
-    onTrain!(_id);
+    if (!isTrainingLimit) onTrain!(_id);
   };
 
   return (
     <li className="hero-preview flex column" key={_id} onClick={() => navigate(`/hero/${_id}`)}>
-      <div className="flex space-between">
+      <div className="flex space-between align-center">
         {ability === 'attacker' ? <IconAttack className="img-ability" /> : <IconDefense className="img-ability" />}
         <span>{name}</span>
-        <span className="fw-700">{currentPower}</span>
+        <span className="current-power">{currentPower}</span>
       </div>
       <img className="img-hero" src={`https://robohash.org/${name}?size=200x200`} alt="" />
-      {userId && <p className="text-center">Owned by {userId.username}</p>}
+      {type === 'Explore' && userId && <p className="text-center">Owned by {userId.username}</p>}
       <div className="actions">
         {!userId && onBuy && (
           <button
-            className={`flex align-center justify-center ${currentUser.money < hero.price ? 'disabled' : ''}`}
+            className={`flex align-center justify-center ${isNotEnoughMoney ? 'disabled' : ''}`}
             onClick={handleBuy}>
             <span>Buy </span>
             <IconCoin className="icon-coin" />
@@ -48,8 +51,8 @@ export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
           </button>
         )}
         {onTrain && (
-          <button className={trainsToday === 5 ? 'disabled' : ''} onClick={handleTrain}>
-            Train {trainsToday}/5
+          <button className={isTrainingLimit ? 'disabled' : ''} onClick={handleTrain}>
+            {isTrainingLimit ? formatDistanceToNowStrict(trainingHistory[4].date) : `Train ${trainsToday}/5`}
           </button>
         )}
       </div>

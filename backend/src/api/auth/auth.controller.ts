@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import authService from './auth.service';
+import { authService } from './auth.service';
 import { userService } from '../user/user.service';
 
 export const login: RequestHandler = async (req, res) => {

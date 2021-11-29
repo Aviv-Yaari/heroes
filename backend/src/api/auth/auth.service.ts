@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import { ExpressError } from '../../services/error.service';
 import { logger } from '../../services/logger.service';
-import { User } from '../user/user.model';
 import { userService } from '../user/user.service';
 
 const login = async (username: string, password: string) => {
@@ -34,4 +33,4 @@ function _checkPassword(password: string) {
   return errors;
 }
 
-export default { login, signup };
+export const authService = { login, signup };

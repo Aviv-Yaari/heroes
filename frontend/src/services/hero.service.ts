@@ -12,10 +12,6 @@ export interface Hero {
   price: number;
 }
 
-// export interface PopulatedHero extends Omit<Hero, 'userId'> {
-//   userId: { _id: string; username: string };
-// }
-
 export const query = async (filter?: { [key: string]: any }) => {
   const params = new URLSearchParams();
   for (const key in filter) {

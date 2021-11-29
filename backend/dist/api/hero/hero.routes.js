@@ -8,7 +8,7 @@ const catchAsync_middleware_1 = require("../../middlewares/catchAsync.middleware
 const requireAuth_middleware_1 = require("../../middlewares/requireAuth.middleware");
 const hero_controller_1 = require("./hero.controller");
 const router = express_1.default.Router();
-router.get('/', requireAuth_middleware_1.requireAuth, (0, catchAsync_middleware_1.catchAsync)(hero_controller_1.getAll));
+router.get('/', (0, catchAsync_middleware_1.catchAsync)(hero_controller_1.getAll));
 router.get('/:id', (0, catchAsync_middleware_1.catchAsync)(hero_controller_1.getById));
 router.post('/', requireAuth_middleware_1.requireAdmin, (0, catchAsync_middleware_1.catchAsync)(hero_controller_1.add));
 router.put('/:id/train', requireAuth_middleware_1.requireAuth, (0, catchAsync_middleware_1.catchAsync)(hero_controller_1.train));

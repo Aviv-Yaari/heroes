@@ -35,4 +35,8 @@ schema.virtual('trainsToday').get(function (this: Hero) {
 schema.set('toObject', { virtuals: true });
 schema.set('toJSON', { virtuals: true });
 
+schema.pre('find', function () {
+  this.populate('userId', 'username');
+});
+
 export const HeroModel = model<Hero>('Hero', schema);
