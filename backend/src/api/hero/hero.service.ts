@@ -1,5 +1,5 @@
 import { FilterQuery, Types } from 'mongoose';
-import { logger } from '../../services/logger.service';
+import { ExpressError } from '../../services/error.service';
 import { UserModel } from '../user/user.model';
 import { Hero, HeroModel } from './hero.model';
 
@@ -11,27 +11,25 @@ export const query = async (filter: FilterQuery<Hero>) => {
 export const add = async (heroDetails: Hero) => {
   const hero = new HeroModel(heroDetails);
   const createdHero = await hero.save();
-  logger.info('Created new hero: ' + createdHero);
   return createdHero;
 };
 
 export const train = async (id: string) => {
   const hero = await HeroModel.findById(id).populate('userId', 'username');
-  if (!hero) throw 'Hero not found';
-  if (hero.get('trainsToday') === 5) throw 'Exceeded training day limit';
+  if (!hero) throw new ExpressError('Hero not found', 404);
+  if (hero.get('trainsToday') === 5) throw new ExpressError('Exceeded day training limit', 400);
   const growth = Math.ceil(Math.random() * 10);
   hero.trainingHistory.unshift({ date: Date.now(), power: hero.currentPower + growth });
   await hero.save();
-  logger.info('Trained hero: ' + hero._id);
   return hero;
 };
 
 export const assign = async (heroId: string, userId: string) => {
   const hero = await HeroModel.findById(heroId);
-  if (!hero) throw 'Could not find hero';
+  if (!hero) throw new ExpressError('Could not find hero', 404);
   const user = await UserModel.findById(userId);
-  if (!user) throw 'User does not exist';
-  if (hero.price > user.money) throw 'Not enough money';
+  if (!user) throw new ExpressError('Could not find user', 404);
+  if (hero.price > user.money) throw new ExpressError('Not enough money', 400);
   hero.userId = new Types.ObjectId(userId) as any;
   await hero.save();
   await user.updateOne({

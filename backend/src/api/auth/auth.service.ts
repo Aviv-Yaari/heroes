@@ -1,26 +1,25 @@
 import bcrypt from 'bcrypt';
+import { ExpressError } from '../../services/error.service';
 import { logger } from '../../services/logger.service';
+import { User } from '../user/user.model';
 import { userService } from '../user/user.service';
 
 const login = async (username: string, password: string) => {
-  logger.info(`Login attenpt with username: ${username}`);
   const user = await userService.query({ username });
-  if (!user) throw 'Invalid username or password';
+  if (!user) throw new ExpressError('Invalid username or password', 401);
   const match = await bcrypt.compare(password, user.password);
-  if (!match) throw 'Invalid username or password';
-  logger.info(`Login with username: ${username}`);
-  user.password = '';
-  return user;
+  if (!match) throw new ExpressError('Invalid username or password', 401);
+  return { ...user.toJSON(), _id: user._id, password: undefined };
 };
 
 const signup = async (username: string, fullname: string, password: string) => {
   const saltRounds = 10;
   logger.debug(`Signup with username: ${username}`);
-  if (!username || !password || !fullname) throw 'fullname, username and password are required';
+  if (!username || !password || !fullname) throw new ExpressError('fullname, username and password are required', 400);
   const passwordErrors = _checkPassword(password);
-  if (passwordErrors.length) throw passwordErrors;
+  if (passwordErrors.length) throw new ExpressError(JSON.stringify(passwordErrors), 400);
   const existingUser = await userService.query({ username });
-  if (existingUser) throw 'User already exists';
+  if (existingUser) throw new ExpressError('User already exists', 400);
   const hash = await bcrypt.hash(password, saltRounds);
   await userService.add({ username, password: hash, fullname, isAdmin: false, money: 0 });
   return { username, password: hash, fullname };

@@ -20,57 +20,32 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.assign = exports.train = exports.add = exports.getById = exports.getAll = void 0;
-const logger_service_1 = require("../../services/logger.service");
 const heroService = __importStar(require("./hero.service"));
 const getAll = async (req, res) => {
-    try {
-        const heroes = await heroService.query(req.query);
-        res.json(heroes);
-    }
-    catch (err) {
-        logger_service_1.logger.error('Error in get heroes: ' + err);
-        res.status(500).send({ err });
-    }
+    const heroes = await heroService.query(req.query);
+    res.json(heroes);
 };
 exports.getAll = getAll;
 const getById = async (req, res) => { };
 exports.getById = getById;
 const add = async (req, res) => {
-    try {
-        const hero = await heroService.add(req.body);
-        res.json(hero);
-    }
-    catch (err) {
-        logger_service_1.logger.error('Error in add hero: ' + err);
-        res.status(500).send({ err });
-    }
+    const hero = await heroService.add(req.body);
+    res.json(hero);
 };
 exports.add = add;
 const train = async (req, res) => {
-    try {
-        const hero = await heroService.train(req.params.id);
-        res.json(hero);
-    }
-    catch (err) {
-        logger_service_1.logger.error('Error in train hero: ' + err);
-        res.status(500).send({ err });
-    }
+    const hero = await heroService.train(req.params.id);
+    res.json(hero);
 };
 exports.train = train;
 const assign = async (req, res) => {
-    try {
-        let hero;
-        const { heroId, userId } = req.params;
-        const { isAdmin, _id: currentUserId } = req.session.user;
-        if (isAdmin)
-            hero = await heroService.assign(heroId, userId);
-        else
-            hero = await heroService.assign(heroId, currentUserId);
-        res.json(hero);
-    }
-    catch (err) {
-        logger_service_1.logger.error('Error in assign hero: ' + err);
-        res.status(500).send({ err });
-    }
+    let hero;
+    const { heroId, userId } = req.params;
+    const { isAdmin, _id: currentUserId } = req.session.user;
+    if (isAdmin)
+        hero = await heroService.assign(heroId, userId);
+    else
+        hero = await heroService.assign(heroId, currentUserId);
+    res.json(hero);
 };
 exports.assign = assign;

@@ -12,15 +12,18 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_session_1 = __importDefault(require("express-session"));
 const logger_service_1 = require("./services/logger.service");
+const logger_middleware_1 = require("./middlewares/logger.middleware");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3030;
+//#region middlewares:
+app.use(logger_middleware_1.loggerMiddleware);
 app.use(express_1.default.json());
 dotenv_1.default.config();
 const session = (0, express_session_1.default)({
     secret: process.env.SESSION_SECRET || 'some secret',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: { secure: false, maxAge: 7 * 24 * 60 * 60 * 1000 },
 });
 app.use(session);
 if (process.env.NODE_ENV === 'production') {
@@ -33,13 +36,22 @@ else {
     };
     app.use((0, cors_1.default)(corsOptions));
 }
+//#region DB:
+mongoose_1.default.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jxpry.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`);
+//#region Routes:
 app.use('/api/auth', auth_routes_1.default);
 app.use('/api/hero', hero_routes_1.default);
-mongoose_1.default.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jxpry.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`);
 app.get('/**', (req, res) => {
     res.sendFile(path_1.default.join(__dirname, 'public', 'index.html'));
 });
+//#region Error handling
+const errorHandler = (err, req, res, next) => {
+    const { statusCode = 500 } = err;
+    const { message = 'Unknown error' } = err;
+    logger_service_1.logger.error(req.method + ' ' + req.path + ' ' + message);
+    res.status(statusCode).send({ err: message });
+};
+app.use(errorHandler);
 app.listen(port, () => {
-    console.log(path_1.default.join(__dirname, 'public', 'index.html'));
     logger_service_1.logger.info('Server is running on port: ' + port);
 });

@@ -1,12 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.log = void 0;
+exports.loggerMiddleware = void 0;
 const logger_service_1 = require("../services/logger.service");
-const log = (req, res, next) => {
-    //   if (req.session && req.session.user) {
-    // logger.info("Req from: " + req.session.user.fullname);
-    //   }
-    logger_service_1.logger.info("request");
+const loggerMiddleware = (req, res, next) => {
+    logger_service_1.logger.info(req.method + ' ' + req.path);
     next();
 };
-exports.log = log;
+exports.loggerMiddleware = loggerMiddleware;

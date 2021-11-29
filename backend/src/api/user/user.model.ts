@@ -9,12 +9,6 @@ export interface User {
   money: number;
 }
 
-export interface MiniUser {
-  _id: string;
-  username: string;
-  isAdmin: boolean;
-}
-
 const schema = new Schema<User>({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },

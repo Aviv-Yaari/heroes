@@ -21,14 +21,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.add = void 0;
 const heroService = __importStar(require("../hero/hero.service"));
-// import logger from "../../services/logger.service";
 const add = async (req, res) => {
-    try {
-        const hero = await heroService.add(req.body);
-        res.json(hero);
-    }
-    catch (err) {
-        res.status(500).send({ err });
-    }
+    const hero = await heroService.add(req.body);
+    res.json(hero);
 };
 exports.add = add;
