@@ -7,14 +7,14 @@ const user_model_1 = require("../user/user.model");
 const hero_model_1 = require("./hero.model");
 const query = async (filter) => {
     const heroes = await hero_model_1.HeroModel.find(filter);
-    return heroes;
+    return heroes.sort((a, b) => b.currentPower - a.currentPower);
 };
 const add = async (heroDetails) => {
     const hero = new hero_model_1.HeroModel(heroDetails);
     const createdHero = await hero.save();
     return createdHero;
 };
-const train = async (id) => {
+const train = async (id, userId) => {
     const hero = await hero_model_1.HeroModel.findById(id);
     if (!hero)
         throw new error_service_1.ExpressError('Hero not found', 404);
@@ -23,6 +23,7 @@ const train = async (id) => {
     const growth = Math.ceil(Math.random() * 10);
     hero.trainingHistory.unshift({ date: Date.now(), power: hero.currentPower + growth });
     await hero.save();
+    await user_model_1.UserModel.updateOne({ _id: userId }, { $inc: { money: growth * 50 } });
     return hero;
 };
 const assign = async (heroId, userId) => {

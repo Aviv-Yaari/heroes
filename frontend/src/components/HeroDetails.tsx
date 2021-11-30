@@ -1,12 +1,13 @@
 import { Hero } from '../services/hero.service';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import { ColorList } from './ColorList';
 
 interface Props {
   hero: Hero;
 }
 
 export function HeroDetails({ hero }: Props) {
-  const { name, ability, colors, currentPower, trainingHistory, userId, price } = hero;
+  const { name, ability, colors = [], currentPower, trainingHistory, userId, price } = hero;
   const dateStarted = trainingHistory.length && trainingHistory[trainingHistory.length - 1].date;
   return (
     <section className="hero-details flex align-center">
@@ -18,7 +19,7 @@ export function HeroDetails({ hero }: Props) {
           name="Started training at"
           value={dateStarted ? formatDistanceToNow(dateStarted, { addSuffix: true }) : 'None'}
         />
-        <HeroField name="Suit colors" value={colors.join(', ') || 'None'} />
+        <HeroField name="Suit colors" value={colors.length ? <ColorList colors={colors} /> : 'None'} />
         <HeroField name="Previous power" value={trainingHistory[1]?.power || 0} />
         <HeroField name="Current power" value={currentPower} />
         <HeroField name="Owner" value={(userId as any)?.username || 'None'} />
@@ -31,7 +32,7 @@ export function HeroDetails({ hero }: Props) {
 
 interface FieldProps {
   name: string;
-  value: string | number;
+  value: any;
 }
 function HeroField({ name, value }: FieldProps) {
   return (

@@ -17,7 +17,7 @@ export const add: RequestHandler = async (req, res) => {
 };
 
 export const train: RequestHandler = async (req, res) => {
-  const hero = await heroService.train(req.params.id);
+  const hero = await heroService.train(req.params.id, req.session.user!._id);
   res.json(hero);
 };
 

@@ -1,0 +1,11 @@
+.color-list {
+  gap: 5px;
+  .color {
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: $clr-light-1;
+    &.selected {
+      background-color: $clr-light-2;
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { ReactComponent as IconAttack } from '../assets/images/attack.svg';
 import { ReactComponent as IconDefense } from '../assets/images/defense.svg';
 import { heroService } from '../services/hero.service';
 import { setAlert } from '../store/system.actions';
+import { ColorList } from '../components/ColorList';
 
 export function AddPage() {
   const user = useSelector((state: RootState) => state.userModule.user);
@@ -68,32 +69,5 @@ export function AddPage() {
         <button>Create</button>
       </form>
     </div>
-  );
-}
-
-interface ColorProps {
-  selectedColors: Set<string>;
-  colors: string[];
-  onClick: Function;
-}
-function ColorList({ selectedColors, colors, onClick }: ColorProps) {
-  return (
-    <section className="flex wrap color-list">
-      {colors.map(color => {
-        const isSelected = selectedColors.has(color);
-        return (
-          <span
-            key={color}
-            className={`color ${isSelected ? 'selected' : ''}`}
-            style={{ color }}
-            onClick={() => {
-              isSelected ? selectedColors.delete(color) : selectedColors.add(color);
-              onClick(new Set(selectedColors));
-            }}>
-            {color}
-          </span>
-        );
-      })}
-    </section>
   );
 }

@@ -6,12 +6,13 @@ import { ReactComponent as IconDefense } from '../assets/images/defense.svg';
 import { ReactComponent as IconCoin } from '../assets/images/coin.svg';
 import { useNavigate } from 'react-router';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
+import { add } from 'date-fns';
 
 interface Props {
   hero: Hero;
   type: 'Explore' | 'My Heroes';
-  onTrain?: Function; // TODO - be more specific
-  onBuy?: Function; // TODO - be more specific
+  onTrain?: (id: string) => any;
+  onBuy?: (id: string) => any;
 }
 
 export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
@@ -52,7 +53,9 @@ export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
         )}
         {onTrain && (
           <button className={isTrainingLimit ? 'disabled' : ''} onClick={handleTrain}>
-            {isTrainingLimit ? formatDistanceToNowStrict(trainingHistory[4].date) : `Train ${trainsToday}/5`}
+            {isTrainingLimit
+              ? formatDistanceToNowStrict(add(trainingHistory[4].date, { days: 1 }))
+              : `Train ${trainsToday}/5`}
           </button>
         )}
       </div>

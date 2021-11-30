@@ -3,8 +3,8 @@ import { HeroPreview } from './HeroPreview';
 
 interface Props {
   heroes: Hero[];
-  onTrain?: Function;
-  onBuy?: Function;
+  onTrain?: (id: string) => any;
+  onBuy?: (id: string) => any;
   type: 'Explore' | 'My Heroes';
 }
 

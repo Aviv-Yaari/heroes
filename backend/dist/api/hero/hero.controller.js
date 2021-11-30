@@ -18,7 +18,7 @@ const add = async (req, res) => {
 };
 exports.add = add;
 const train = async (req, res) => {
-    const hero = await hero_service_1.heroService.train(req.params.id);
+    const hero = await hero_service_1.heroService.train(req.params.id, req.session.user._id);
     res.json(hero);
 };
 exports.train = train;

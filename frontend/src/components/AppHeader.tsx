@@ -47,11 +47,11 @@ function UserMenu({ user, onClose }: MenuProps) {
   return (
     <div className="overlay" onClick={onClose}>
       <section className="user-menu">
-        <div>
+        <div className="money">
           <IconCoin className="icon-coin" />
           <span>{user.money}</span>
         </div>
-        <button className="btn-link" onClick={async () => await dispatch(logout())}>
+        <button className="full-width btn-link" onClick={async () => await dispatch(logout())}>
           Logout
         </button>
       </section>

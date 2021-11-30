@@ -49,8 +49,8 @@ export function AuthPage() {
         dispatch(setAlert({ message: 'Signed up successfuly', type: 'success' }));
       }
     } catch (err) {
-      console.log(err);
-      const { message = 'Could not log in' } = err as Error;
+      let { message = 'Could not log in' } = err as Error;
+      if (message === '401') message = 'Invalid username / password';
       dispatch(setAlert({ message: page === 'login' ? message : 'Could not sign up', type: 'error' }));
     }
   };
@@ -102,10 +102,10 @@ export function AuthPage() {
         </p>
         {/* "For dev": */}
         <button type="button" className="btn-link" onClick={() => handleEasyLogin('avivyar', 'Aviv!!1234')}>
-          Easy login - dev porpuses
+          Easy login - dev purposes
         </button>
         <button type="button" className="btn-link" onClick={() => handleEasyLogin('admin', 'Admin!!1234')}>
-          Easy admin login - dev porpuses
+          Easy admin login - dev purposes
         </button>
         {/* End of "For dev" */}
       </form>
