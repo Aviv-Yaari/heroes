@@ -19,15 +19,12 @@ interface Props {
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export function HeroProgress({ trainingHistory }: Props) {
-  // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
   const labels = [];
   const dataset = [];
   for (const training of trainingHistory) {
     labels.push(format(new Date(training.date), 'dd/MM h:m'));
     dataset.push(training.power);
   }
-  // const labels = trainingHistory.reverse().map(training => format(new Date(training.date), 'dd/MM h:m'));
-  // const dataset = trainingHistory.map(training => training.power);
   const options = {
     responsive: true,
     plugins: {

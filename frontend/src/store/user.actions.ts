@@ -31,9 +31,9 @@ export const signup = (username: string, fullname: string, password: string) => 
   };
 };
 
-export const getCurrentUser = () => {
+export const reloadUser = () => {
   return async (dispatch: Dispatch) => {
-    const user = await userService.getCurrentUser();
+    const user = await userService.reloadUser();
     dispatch({
       type: 'SET_USER',
       user,

@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { Hero } from '../services/hero.service';
+import { userService } from '../services/user.service';
 
 export interface User {
   _id: string;
@@ -16,7 +17,7 @@ interface IAction extends Action {
 }
 
 const initialState = {
-  user: null,
+  user: userService.getCurrentUser(),
 };
 
 export function userReducer(state = initialState, action: IAction) {

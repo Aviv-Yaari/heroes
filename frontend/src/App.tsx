@@ -5,8 +5,6 @@ import { AppHeader } from './components/AppHeader';
 import { MyHeroesPage } from './pages/MyHeroesPage';
 import { AuthPage } from './pages/AuthPage';
 import { RootState } from './store/store';
-import { useEffect } from 'react';
-import { getCurrentUser } from './store/user.actions';
 import { ExplorePage } from './pages/ExplorePage';
 import { AddPage } from './pages/AddPage';
 import { HeroPage } from './pages/HeroPage';
@@ -17,17 +15,6 @@ export function App() {
   const user = useSelector((state: RootState) => state.userModule.user);
   const alert = useSelector((state: RootState) => state.systemModule.alert);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        await dispatch(getCurrentUser());
-      } catch (err) {
-        setAlert({ message: 'Sorry, an error occured', type: 'error' });
-      }
-    };
-    getUser();
-  }, [dispatch]);
 
   const handleCloseAlert = () => {
     dispatch(setAlert(null));

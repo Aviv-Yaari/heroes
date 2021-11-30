@@ -1,22 +1,41 @@
+import { User } from '../store/user.reducer';
 import { httpService } from './http.service';
+import CryptoJS from 'crypto-js';
 
 const login = async (username: string, password: string) => {
   const user = await httpService.post('auth/login', { username, password });
+  _saveToStorage(user);
   return user;
 };
 
 const logout = async () => {
+  sessionStorage.clear();
   return httpService.post('auth/logout');
 };
 
 const signup = async (username: string, fullname: string, password: string) => {
   const user = await httpService.post('auth/signup', { username, fullname, password });
+  _saveToStorage(user);
   return user;
 };
 
-const getCurrentUser = async () => {
+const reloadUser = async () => {
   const user = await httpService.get('auth/current');
+  _saveToStorage(user);
   return user;
+};
+
+const getCurrentUser = () => {
+  const encryptedUser = sessionStorage.getItem('user');
+  if (!encryptedUser) return null;
+  try {
+    const bytes = CryptoJS.AES.decrypt(encryptedUser, process.env.REACT_APP_USER_HASH || 'SECRET');
+    const user = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    return user;
+  } catch (err) {
+    sessionStorage.clear();
+    return null;
+  }
 };
 
 const checkRegistration = ({ username, fullname, password }: { [key: string]: string }) => {
@@ -33,4 +52,12 @@ const checkRegistration = ({ username, fullname, password }: { [key: string]: st
   return { password: passwordErrors, username: usernameErrors, fullname: fullnameErrors };
 };
 
-export const userService = { login, signup, logout, getCurrentUser, checkRegistration };
+function _saveToStorage(user: User) {
+  const encryptedUser = CryptoJS.AES.encrypt(
+    JSON.stringify(user),
+    process.env.REACT_APP_USER_HASH || 'SECRET'
+  ).toString();
+  sessionStorage.setItem('user', encryptedUser);
+}
+
+export const userService = { login, signup, logout, getCurrentUser, reloadUser, checkRegistration };

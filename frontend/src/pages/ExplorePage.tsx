@@ -7,7 +7,7 @@ import { heroService } from '../services/hero.service';
 import { Hero } from '../services/hero.service';
 import { RootState } from '../store/store';
 import { setAlert } from '../store/system.actions';
-import { getCurrentUser } from '../store/user.actions';
+import { reloadUser } from '../store/user.actions';
 
 export function ExplorePage() {
   const [heroes, setHeroes] = useState<Hero[] | null>(null);
@@ -31,7 +31,7 @@ export function ExplorePage() {
     try {
       const updatedHero = await heroService.buy(heroId);
       setHeroes(heroes => heroes!.map(hero => (hero._id === updatedHero._id ? updatedHero : hero)));
-      await dispatch(getCurrentUser());
+      await dispatch(reloadUser());
       dispatch(setAlert({ message: 'Hero bought', type: 'success' }));
     } catch (err) {
       dispatch(setAlert({ message: 'Could not buy hero', type: 'error' }));
@@ -43,11 +43,7 @@ export function ExplorePage() {
     <div className="container">
       <main className="content explore-page">
         <h2>Explore</h2>
-        {user.isAdmin && (
-          <button>
-            <Link to="/add">Add</Link>
-          </button>
-        )}
+        {user.isAdmin && <Link to="/add">Admin: Add a Hero</Link>}
         <HeroList heroes={heroes} type="Explore" onBuy={handleBuy} />
       </main>
     </div>
