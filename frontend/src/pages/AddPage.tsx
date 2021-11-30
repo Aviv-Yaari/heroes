@@ -5,6 +5,7 @@ import { RootState } from '../store/store';
 import { ReactComponent as IconAttack } from '../assets/images/attack.svg';
 import { ReactComponent as IconDefense } from '../assets/images/defense.svg';
 import { heroService } from '../services/hero.service';
+import { setAlert } from '../store/system.actions';
 
 export function AddPage() {
   const user = useSelector((state: RootState) => state.userModule.user);
@@ -23,9 +24,10 @@ export function AddPage() {
     ev.preventDefault();
     try {
       await heroService.add({ ...values, colors: Array.from(values.colors) });
-      alert('Hero created!');
+      navigate('/explore');
+      setAlert({ message: 'Hero added', type: 'success' });
     } catch (err) {
-      alert(JSON.stringify(err));
+      setAlert({ message: 'Could not add hero', type: 'error' });
     }
   };
 

@@ -51,7 +51,7 @@ function UserMenu({ user, onClose }: MenuProps) {
           <IconCoin className="icon-coin" />
           <span>{user.money}</span>
         </div>
-        <button className="btn-link" onClick={() => dispatch(logout())}>
+        <button className="btn-link" onClick={async () => await dispatch(logout())}>
           Logout
         </button>
       </section>

@@ -19,7 +19,14 @@ export function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCurrentUser());
+    const getUser = async () => {
+      try {
+        await dispatch(getCurrentUser());
+      } catch (err) {
+        setAlert({ message: 'Sorry, an error occured', type: 'error' });
+      }
+    };
+    getUser();
   }, [dispatch]);
 
   const handleCloseAlert = () => {
@@ -36,11 +43,16 @@ export function App() {
           <Route path="/explore" element={<ExplorePage />} />
           <Route path="/add" element={<AddPage />} />
           <Route path="/hero/:id" element={<HeroPage />} />
+          <Route path="*" element={<MyHeroesPage />} />
         </Routes>
       )}
       <AppFooter />
       {alert && (
-        <Snackbar open autoHideDuration={6000} onClose={handleCloseAlert}>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open
+          autoHideDuration={6000}
+          onClose={handleCloseAlert}>
           <Alert severity={alert.type}>{alert.message}</Alert>
         </Snackbar>
       )}

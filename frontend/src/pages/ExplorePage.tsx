@@ -32,10 +32,10 @@ export function ExplorePage() {
     try {
       const updatedHero = await heroService.buy(heroId);
       setHeroes(heroes => heroes!.map(hero => (hero._id === updatedHero._id ? updatedHero : hero)));
-      dispatch(getCurrentUser());
-      dispatch(setAlert({ message: 'Bought ' + updatedHero.name, type: 'success' }));
+      await dispatch(getCurrentUser());
+      dispatch(setAlert({ message: 'Hero bought', type: 'success' }));
     } catch (err) {
-      dispatch(setAlert({ message: err as string, type: 'error' }));
+      dispatch(setAlert({ message: 'Could not buy hero', type: 'error' }));
     }
   };
 

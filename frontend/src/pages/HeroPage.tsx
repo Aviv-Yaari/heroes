@@ -4,6 +4,7 @@ import { HeroDetails } from '../components/HeroDetails';
 import { HeroProgress } from '../components/HeroProgress';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Hero, heroService } from '../services/hero.service';
+import { setAlert } from '../store/system.actions';
 
 export function HeroPage() {
   const { id } = useParams();
@@ -12,8 +13,12 @@ export function HeroPage() {
 
   useEffect(() => {
     const getHero = async () => {
-      const hero = await heroService.query({ _id: id });
-      setHero(hero[0]);
+      try {
+        const hero = await heroService.query({ _id: id });
+        setHero(hero[0]);
+      } catch (err) {
+        setAlert({ message: 'Could not get hero data', type: 'error' });
+      }
     };
     getHero();
   }, [id]);

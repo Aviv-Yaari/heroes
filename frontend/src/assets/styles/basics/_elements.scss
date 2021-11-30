@@ -1,6 +1,7 @@
 input {
   outline: none;
   border: 1px solid #c5c6c9;
+  border-radius: 4px;
   color: #404145;
   padding: 8px 12px;
   width: 100%;
@@ -9,6 +10,9 @@ input {
   font-size: 0.9em;
   &:hover {
     border-color: #95979d;
+  }
+  &.invalid {
+    border-color: #f74040;
   }
 }
 
@@ -34,7 +38,7 @@ button {
     }
   }
   &.disabled {
-    filter: opacity(0.5);
+    background: $clr-primary-3;
     cursor: default;
   }
 }
@@ -44,8 +48,8 @@ button {
   justify-content: center;
   background: $clr-light-1;
   align-items: flex-start;
+  padding: 10px 0;
   .content {
-    margin-top: 10px;
     background: #fff;
     padding: 1.5em;
     width: 100%;

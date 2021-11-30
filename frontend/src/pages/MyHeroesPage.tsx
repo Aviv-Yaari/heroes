@@ -18,7 +18,7 @@ export function MyHeroesPage() {
         const heroes = await heroService.query({ userId: user._id });
         setHeroes(heroes);
       } catch (err) {
-        dispatch(setAlert({ message: err as string, type: 'error' }));
+        dispatch(setAlert({ message: 'Could not get hero data', type: 'error' }));
       }
     };
     getHeroes();
@@ -29,7 +29,7 @@ export function MyHeroesPage() {
       const updatedHero = await heroService.train(heroId);
       setHeroes(heroes => heroes!.map(hero => (hero._id === updatedHero._id ? updatedHero : hero)));
     } catch (err) {
-      dispatch(err as string);
+      dispatch(setAlert({ message: 'Could not train hero', type: 'error' }));
     }
   };
 

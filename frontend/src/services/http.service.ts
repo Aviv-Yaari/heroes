@@ -15,8 +15,9 @@ async function ajax(endpoint: string, method: Method = 'GET', data: {} | null = 
     });
     return res.data;
   } catch (err) {
-    console.dir(err);
-    throw (err as AxiosError).response?.data.err;
+    const message = (err as AxiosError).response?.data.err || 'HTTP Error';
+    console.error(message);
+    throw new Error(message);
   }
 }
 

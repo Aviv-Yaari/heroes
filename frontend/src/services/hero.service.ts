@@ -12,7 +12,7 @@ export interface Hero {
   price: number;
 }
 
-export const query = async (filter?: { [key: string]: any }) => {
+const query = async (filter?: { [key: string]: any }) => {
   const params = new URLSearchParams();
   for (const key in filter) {
     params.append(key, filter[key]);
@@ -21,17 +21,17 @@ export const query = async (filter?: { [key: string]: any }) => {
   return heroes as Hero[];
 };
 
-export const train = async (heroId: string) => {
+const train = async (heroId: string) => {
   const hero = await httpService.put(`hero/${heroId}/train`);
   return hero;
 };
 
-export const buy = async (heroId: string) => {
+const buy = async (heroId: string) => {
   const hero = await httpService.put(`hero/${heroId}/assign`);
   return hero;
 };
 
-export const add = async (hero: object) => {
+const add = async (hero: object) => {
   await httpService.post('hero', hero);
 };
 
