@@ -1,4 +1,5 @@
 # heroes
+https://aviv-heroes.herokuapp.com/  
 A heroes game!  
 • Earn coins buy training your heroes (only 5 trains allowed per day).  
 • Buy heroes with the coins you earn.  
