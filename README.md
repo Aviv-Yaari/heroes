@@ -4,7 +4,7 @@ A heroes game!
 • Buy heroes with the coins you earn.  
 • Special features for admins.  
 
-A TypeScript project. Tech stack includes:
+A TypeScript project. Tech stack includes:  
 Frontend: React.js, Redux, Sass.  
 Backend: Node.js, Express.js, Mongodb.  
 
