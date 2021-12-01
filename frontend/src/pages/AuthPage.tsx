@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { FormField } from '../components/FormField';
 import { userService } from '../services/user.service';
+import { RootState } from '../store/store';
 import { setAlert } from '../store/system.actions';
 import { login, signup } from '../store/user.actions';
 
@@ -9,8 +11,14 @@ export function AuthPage() {
   const [page, setPage] = useState<'login' | 'signup'>('login');
   const [values, setValues] = useState({ username: '', fullname: '', password: '' });
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({ username: [], fullname: [], password: [] });
+  const user = useSelector((state: RootState) => state.userModule.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isErrros = errors.username.length || errors.fullname.length || errors.password.length;
+
+  useEffect(() => {
+    if (user) navigate('/');
+  }, [user, navigate]);
 
   const handleChangePage = () => {
     if (page === 'login') setPage('signup');

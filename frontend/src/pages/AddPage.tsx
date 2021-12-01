@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '../store/store';
 import { ReactComponent as IconAttack } from '../assets/images/attack.svg';
 import { ReactComponent as IconDefense } from '../assets/images/defense.svg';
 import { heroService } from '../services/hero.service';
 import { setAlert } from '../store/system.actions';
 import { ColorList } from '../components/ColorList';
+import { useCheckUser } from '../hooks/useCheckUser';
 
 export function AddPage() {
-  const user = useSelector((state: RootState) => state.userModule.user);
+  const user = useCheckUser();
   const [values, setValues] = useState({ name: '', price: '', ability: '', power: '', colors: new Set<string>() });
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && !user.isAdmin) navigate('/');
+    if (!user?.isAdmin) navigate('/');
   }, [navigate, user]);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ev => {

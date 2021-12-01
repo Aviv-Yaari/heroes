@@ -1,31 +1,32 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { HeroList } from '../components/HeroList';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { useCheckUser } from '../hooks/useCheckUser';
 import { heroService } from '../services/hero.service';
 import { Hero } from '../services/hero.service';
-import { RootState } from '../store/store';
 import { setAlert } from '../store/system.actions';
 import { reloadUser } from '../store/user.actions';
 
 export function ExplorePage() {
   const [heroes, setHeroes] = useState<Hero[] | null>(null);
-  const user = useSelector((state: RootState) => state.userModule.user);
+  const user = useCheckUser();
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getHeroes = async () => {
       try {
         const heroes = await heroService.query();
-        const excludingUser = heroes.filter(hero => hero.userId?._id !== user._id);
+        const excludingUser = heroes.filter(hero => hero.userId?._id !== user?._id);
         setHeroes(excludingUser);
       } catch (err) {
         dispatch(setAlert({ message: 'Could not get hero data', type: 'error' }));
       }
     };
+    if (!user) return;
     getHeroes();
-  }, [dispatch, user._id]);
+  }, [dispatch, user]);
 
   const handleBuy = async (heroId: string) => {
     try {
@@ -43,7 +44,7 @@ export function ExplorePage() {
     <div className="container">
       <main className="content explore-page">
         <h2>Explore</h2>
-        {user.isAdmin && <Link to="/add">Admin: Add a Hero</Link>}
+        {user?.isAdmin && <Link to="/add">Admin: Add a Hero</Link>}
         <HeroList heroes={heroes} type="Explore" onBuy={handleBuy} />
       </main>
     </div>

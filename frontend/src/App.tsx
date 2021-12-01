@@ -10,9 +10,10 @@ import { AddPage } from './pages/AddPage';
 import { HeroPage } from './pages/HeroPage';
 import { Alert, Snackbar } from '@mui/material';
 import { setAlert } from './store/system.actions';
+import { useCheckUser } from './hooks/useCheckUser';
 
 export function App() {
-  const user = useSelector((state: RootState) => state.userModule.user);
+  const user = useCheckUser();
   const alert = useSelector((state: RootState) => state.systemModule.alert);
   const dispatch = useDispatch();
 
@@ -23,16 +24,14 @@ export function App() {
   return (
     <div className="app main-layout">
       <AppHeader user={user} />
-      {!user && <AuthPage />}
-      {user && (
-        <Routes>
-          <Route path="/" element={<MyHeroesPage />} />
-          <Route path="/explore" element={<ExplorePage />} />
-          <Route path="/add" element={<AddPage />} />
-          <Route path="/hero/:id" element={<HeroPage />} />
-          <Route path="*" element={<MyHeroesPage />} />
-        </Routes>
-      )}
+      <Routes>
+        <Route path="/" element={<MyHeroesPage />} />
+        <Route path="/login" element={<AuthPage />} />
+        <Route path="/explore" element={<ExplorePage />} />
+        <Route path="/add" element={<AddPage />} />
+        <Route path="/hero/:id" element={<HeroPage />} />
+        <Route path="*" element={<MyHeroesPage />} />
+      </Routes>
       <AppFooter />
       {alert && (
         <Snackbar

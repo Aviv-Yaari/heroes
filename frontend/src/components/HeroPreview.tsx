@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
 import { Hero } from '../services/hero.service';
 import { ReactComponent as IconAttack } from '../assets/images/attack.svg';
 import { ReactComponent as IconDefense } from '../assets/images/defense.svg';
@@ -7,6 +5,7 @@ import { ReactComponent as IconCoin } from '../assets/images/coin.svg';
 import { useNavigate } from 'react-router';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import { add } from 'date-fns';
+import { useCheckUser } from '../hooks/useCheckUser';
 
 interface Props {
   hero: Hero;
@@ -17,10 +16,10 @@ interface Props {
 
 export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
   const { _id, name, ability, currentPower, userId, price, trainsToday, trainingHistory } = hero;
-  const currentUser = useSelector((state: RootState) => state.userModule.user);
+  const currentUser = useCheckUser();
   const navigate = useNavigate();
   const isTrainingLimit = trainsToday === 5;
-  const isNotEnoughMoney = currentUser.money < hero.price;
+  const isNotEnoughMoney = currentUser && currentUser.money < hero.price;
 
   const handleBuy: React.MouseEventHandler = ev => {
     ev.stopPropagation();

@@ -7,7 +7,7 @@ import { logout } from '../store/user.actions';
 import { useState } from 'react';
 
 interface Props {
-  user: User;
+  user?: User;
 }
 export function AppHeader({ user }: Props) {
   const [isMenu, setIsMenu] = useState(false);
@@ -34,7 +34,7 @@ export function AppHeader({ user }: Props) {
           </div>
         </section>
       )}
-      {isMenu && <UserMenu user={user} onClose={handleToggleMenu} />}
+      {user && isMenu && <UserMenu user={user} onClose={handleToggleMenu} />}
     </header>
   );
 }
@@ -49,7 +49,7 @@ function UserMenu({ user, onClose }: MenuProps) {
       <section className="user-menu">
         <div className="money">
           <IconCoin className="icon-coin" />
-          <span>{user.money}</span>
+          <span>{user?.money}</span>
         </div>
         <button className="full-width btn-link" onClick={async () => await dispatch(logout())}>
           Logout

@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { HeroList } from '../components/HeroList';
 import { heroService } from '../services/hero.service';
-import { RootState } from '../store/store';
 import { Hero } from '../services/hero.service';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { setAlert } from '../store/system.actions';
 import { reloadUser } from '../store/user.actions';
+import { useCheckUser } from '../hooks/useCheckUser';
 
 export function MyHeroesPage() {
-  const user = useSelector((state: RootState) => state.userModule.user);
+  const user = useCheckUser();
   const dispatch = useDispatch();
   const [heroes, setHeroes] = useState<Hero[] | null>(null);
 
   useEffect(() => {
     const getHeroes = async () => {
       try {
+        if (!user) return;
         const heroes = await heroService.query({ userId: user._id });
         setHeroes(heroes);
       } catch (err) {
@@ -23,7 +24,7 @@ export function MyHeroesPage() {
       }
     };
     getHeroes();
-  }, [dispatch, user._id]);
+  }, [dispatch, user]);
 
   const handleTrain = async (heroId: string) => {
     try {
