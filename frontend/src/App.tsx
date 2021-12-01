@@ -21,12 +21,19 @@ export function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(reloadUser());
+    const reload = async () => {
+      try {
+        await dispatch(reloadUser());
+      } catch (err) {
+        dispatch(setAlert({ message: 'Could not get logged in user', type: 'error' }));
+      }
+    };
+    reload();
   }, [dispatch]);
 
   useEffect(() => {
     if (!user) {
-      console.log('No user, redirecting to login');
+      console.info('No user, redirecting to login');
       navigate('/login');
     }
   }, [navigate, user]);
