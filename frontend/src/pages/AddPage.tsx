@@ -10,7 +10,7 @@ import { ColorList } from '../components/ColorList';
 
 export function AddPage() {
   const user = useSelector((state: RootState) => state.userModule.user);
-  const [values, setValues] = useState({ name: '', price: '', ability: '', colors: new Set<string>() });
+  const [values, setValues] = useState({ name: '', price: '', ability: '', power: '', colors: new Set<string>() });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +24,8 @@ export function AddPage() {
   const handleSubmit: React.FormEventHandler = async ev => {
     ev.preventDefault();
     try {
-      await heroService.add({ ...values, colors: Array.from(values.colors) });
+      const trainingHistory = +values.power > 0 ? [{ date: Date.now(), power: values.power }] : [];
+      await heroService.add({ ...values, trainingHistory, colors: Array.from(values.colors) });
       navigate('/explore');
       setAlert({ message: 'Hero added', type: 'success' });
     } catch (err) {
@@ -38,8 +39,9 @@ export function AddPage() {
       <form className="content add-page flex column" onSubmit={handleSubmit}>
         <h2>Create a Hero</h2>
         <div>
-          <input name="name" type="text" placeholder="Name" value={values.name} onChange={handleChange} />
-          <input name="price" type="text" placeholder="Price" value={values.price} onChange={handleChange} />
+          <input name="name" type="text" placeholder="Name" value={values.name} onChange={handleChange} required />
+          <input name="price" type="number" placeholder="Price" value={values.price} onChange={handleChange} required />
+          <input name="power" type="number" placeholder="Power" value={values.power} onChange={handleChange} required />
         </div>
         <div>
           <p>Ability:</p>
