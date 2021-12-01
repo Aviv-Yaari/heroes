@@ -5,7 +5,7 @@ import { ReactComponent as IconCoin } from '../assets/images/coin.svg';
 import { useNavigate } from 'react-router';
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict';
 import { add } from 'date-fns';
-import { useCheckUser } from '../hooks/useCheckUser';
+import { useGetUser } from '../hooks/useGetUser';
 
 interface Props {
   hero: Hero;
@@ -16,7 +16,7 @@ interface Props {
 
 export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
   const { _id, name, ability, currentPower, userId, price, trainsToday, trainingHistory } = hero;
-  const currentUser = useCheckUser();
+  const currentUser = useGetUser();
   const navigate = useNavigate();
   const isTrainingLimit = trainsToday === 5;
   const isNotEnoughMoney = currentUser && currentUser.money < hero.price;

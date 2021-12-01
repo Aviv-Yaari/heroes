@@ -5,10 +5,10 @@ import { ReactComponent as IconDefense } from '../assets/images/defense.svg';
 import { heroService } from '../services/hero.service';
 import { setAlert } from '../store/system.actions';
 import { ColorList } from '../components/ColorList';
-import { useCheckUser } from '../hooks/useCheckUser';
+import { useGetUser } from '../hooks/useGetUser';
 
 export function AddPage() {
-  const user = useCheckUser();
+  const user = useGetUser();
   const [values, setValues] = useState({ name: '', price: '', ability: '', power: '', colors: new Set<string>() });
   const navigate = useNavigate();
 

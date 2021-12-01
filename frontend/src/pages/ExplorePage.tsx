@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { HeroList } from '../components/HeroList';
 import { LoadingSpinner } from '../components/LoadingSpinner';
-import { useCheckUser } from '../hooks/useCheckUser';
+import { useGetUser } from '../hooks/useGetUser';
 import { heroService } from '../services/hero.service';
 import { Hero } from '../services/hero.service';
 import { setAlert } from '../store/system.actions';
@@ -11,7 +11,7 @@ import { reloadUser } from '../store/user.actions';
 
 export function ExplorePage() {
   const [heroes, setHeroes] = useState<Hero[] | null>(null);
-  const user = useCheckUser();
+  const user = useGetUser();
   const dispatch = useDispatch();
 
   useEffect(() => {

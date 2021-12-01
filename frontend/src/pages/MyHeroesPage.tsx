@@ -6,10 +6,10 @@ import { Hero } from '../services/hero.service';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { setAlert } from '../store/system.actions';
 import { reloadUser } from '../store/user.actions';
-import { useCheckUser } from '../hooks/useCheckUser';
+import { useGetUser } from '../hooks/useGetUser';
 
 export function MyHeroesPage() {
-  const user = useCheckUser();
+  const user = useGetUser();
   const dispatch = useDispatch();
   const [heroes, setHeroes] = useState<Hero[] | null>(null);
 

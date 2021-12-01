@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { AppFooter } from './components/AppFooter';
 import { AppHeader } from './components/AppHeader';
 import { MyHeroesPage } from './pages/MyHeroesPage';
@@ -10,12 +10,26 @@ import { AddPage } from './pages/AddPage';
 import { HeroPage } from './pages/HeroPage';
 import { Alert, Snackbar } from '@mui/material';
 import { setAlert } from './store/system.actions';
-import { useCheckUser } from './hooks/useCheckUser';
+import { useGetUser } from './hooks/useGetUser';
+import { useEffect } from 'react';
+import { reloadUser } from './store/user.actions';
 
 export function App() {
-  const user = useCheckUser();
+  const user = useGetUser();
   const alert = useSelector((state: RootState) => state.systemModule.alert);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(reloadUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!user) {
+      console.log('No user, redirecting to login');
+      navigate('/login');
+    }
+  }, [navigate, user]);
 
   const handleCloseAlert = () => {
     dispatch(setAlert(null));
