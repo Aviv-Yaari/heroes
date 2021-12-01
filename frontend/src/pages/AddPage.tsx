@@ -23,7 +23,7 @@ export function AddPage() {
   const handleSubmit: React.FormEventHandler = async ev => {
     ev.preventDefault();
     try {
-      const trainingHistory = +values.power > 0 ? [{ date: Date.now(), power: values.power }] : [];
+      const trainingHistory = +values.power > 0 ? [{ date: Date.now(), power: +values.power }] : [];
       await heroService.add({ ...values, trainingHistory, colors: Array.from(values.colors) });
       navigate('/explore');
       setAlert({ message: 'Hero added', type: 'success' });
