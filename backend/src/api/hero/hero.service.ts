@@ -5,6 +5,7 @@ import { Hero, HeroModel } from './hero.model';
 
 const query = async (filter: FilterQuery<Hero>) => {
   const criteria: FilterQuery<Hero> = {};
+  if (filter._id) criteria._id = filter._id;
   if (filter.userId) criteria.userId = filter.userId;
   if (filter.userId === 'none') criteria.userId = { $exists: false };
   if (filter.ability) criteria.ability = filter.ability;
@@ -24,8 +25,9 @@ const train = async (id: string, userId: string) => {
   if (!hero) throw new ExpressError('Hero not found', 404);
   if (hero.get('trainsToday') === 5) throw new ExpressError('Exceeded day training limit', 400);
   const growth = Math.ceil(Math.random() * 10);
-  hero.trainingHistory.unshift({ date: Date.now(), power: hero.power + growth });
-  hero.power += growth;
+  let newPower = hero.power + growth;
+  hero.trainingHistory.unshift({ date: Date.now(), power: newPower });
+  hero.power = newPower;
   await hero.save();
   await UserModel.updateOne({ _id: userId }, { $inc: { money: growth * 50 } });
   return hero;

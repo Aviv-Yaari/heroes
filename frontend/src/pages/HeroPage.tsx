@@ -14,8 +14,8 @@ export function HeroPage() {
   useEffect(() => {
     const getHero = async () => {
       try {
-        const hero = await heroService.query({ _id: id });
-        setHero(hero[0]);
+        const hero = await heroService.getById(id!);
+        setHero(hero);
       } catch (err) {
         setAlert({ message: 'Could not get hero data', type: 'error' });
       }

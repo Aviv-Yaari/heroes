@@ -7,6 +7,8 @@ const user_model_1 = require("../user/user.model");
 const hero_model_1 = require("./hero.model");
 const query = async (filter) => {
     const criteria = {};
+    if (filter._id)
+        criteria._id = filter._id;
     if (filter.userId)
         criteria.userId = filter.userId;
     if (filter.userId === 'none')
@@ -30,8 +32,9 @@ const train = async (id, userId) => {
     if (hero.get('trainsToday') === 5)
         throw new error_service_1.ExpressError('Exceeded day training limit', 400);
     const growth = Math.ceil(Math.random() * 10);
-    hero.trainingHistory.unshift({ date: Date.now(), power: hero.power + growth });
-    hero.power += growth;
+    let newPower = hero.power + growth;
+    hero.trainingHistory.unshift({ date: Date.now(), power: newPower });
+    hero.power = newPower;
     await hero.save();
     await user_model_1.UserModel.updateOne({ _id: userId }, { $inc: { money: growth * 50 } });
     return hero;

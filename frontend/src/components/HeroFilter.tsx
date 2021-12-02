@@ -55,6 +55,7 @@ export function HeroFilter({ filter, maxPower, onFilter }: Props) {
         <Slider
           min={0}
           max={maxPower}
+          step={100}
           value={[filter.minPower, filter.maxPower]}
           onChange={handleSliderChange}
           valueLabelDisplay="auto"

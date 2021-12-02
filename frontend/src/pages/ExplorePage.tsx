@@ -20,7 +20,7 @@ export interface Filter {
 
 export function ExplorePage() {
   const [heroes, setHeroes] = useState<Hero[] | null>(null);
-  const [filter, setFilter] = useState<Filter>({ minPower: 0, maxPower: 1000 });
+  const [filter, setFilter] = useState<Filter>({ minPower: 0, maxPower: 10000 });
   const user = useGetUser();
   const dispatch = useDispatch();
 
@@ -29,7 +29,6 @@ export function ExplorePage() {
       try {
         const heroes = await heroService.query(filter);
         const excludingUser = heroes.filter(hero => hero.userId?._id !== user?._id);
-
         setHeroes(excludingUser);
       } catch (err) {
         dispatch(setAlert({ message: 'Could not get hero data', type: 'error' }));
@@ -68,7 +67,7 @@ export function ExplorePage() {
       <main className="content explore-page">
         <h2>Explore</h2>
         {user?.isAdmin && <Link to="/add">Admin: Add a Hero</Link>}
-        <HeroFilter filter={filter} onFilter={handleFilter} maxPower={1000} />
+        <HeroFilter filter={filter} onFilter={handleFilter} maxPower={5000} />
         <HeroList heroes={heroes} type="Explore" onBuy={handleBuy} />
       </main>
     </div>

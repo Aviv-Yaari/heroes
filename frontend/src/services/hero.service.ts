@@ -21,6 +21,11 @@ const query = async (filter?: { [key: string]: any }) => {
   return heroes as Hero[];
 };
 
+const getById = async (id: string) => {
+  const hero = await httpService.get(`hero/${id}`);
+  return hero;
+};
+
 const train = async (heroId: string) => {
   const hero = await httpService.put(`hero/${heroId}/train`);
   return hero;
@@ -35,4 +40,4 @@ const add = async (hero: object) => {
   await httpService.post('hero', hero);
 };
 
-export const heroService = { query, train, buy, add };
+export const heroService = { query, getById, train, buy, add };
