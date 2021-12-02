@@ -6,7 +6,7 @@ export interface Hero {
   ability: 'attacker' | 'defender';
   colors: string[];
   trainingHistory: { date: number; power: number }[];
-  currentPower: number;
+  power: number;
   trainsToday: number;
   userId?: { _id: string; username: string };
   price: number;

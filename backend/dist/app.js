@@ -37,7 +37,10 @@ else {
     app.use((0, cors_1.default)(corsOptions));
 }
 //#region DB:
-mongoose_1.default.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jxpry.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`);
+const dbProd = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jxpry.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+const dbDev = 'mongodb://localhost:27017';
+const dbUrl = process.env.NODE_ENV === 'production' ? dbProd : dbDev;
+mongoose_1.default.connect(dbUrl);
 //#region Routes:
 app.use('/api/auth', auth_routes_1.default);
 app.use('/api/hero', hero_routes_1.default);

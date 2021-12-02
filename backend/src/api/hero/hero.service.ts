@@ -4,8 +4,13 @@ import { UserModel } from '../user/user.model';
 import { Hero, HeroModel } from './hero.model';
 
 const query = async (filter: FilterQuery<Hero>) => {
-  const heroes = await HeroModel.find(filter);
-  return heroes.sort((a, b) => b.currentPower - a.currentPower);
+  const criteria: FilterQuery<Hero> = {};
+  if (filter.userId) criteria.userId = filter.userId;
+  if (filter.userId === 'none') criteria.userId = { $exists: false };
+  if (filter.ability) criteria.ability = filter.ability;
+  if (filter.minPower && filter.maxPower) criteria.power = { $gte: +filter.minPower, $lte: +filter.maxPower };
+  const heroes = await HeroModel.find(criteria).sort({ power: -1 });
+  return heroes;
 };
 
 const add = async (heroDetails: Hero) => {
@@ -19,7 +24,8 @@ const train = async (id: string, userId: string) => {
   if (!hero) throw new ExpressError('Hero not found', 404);
   if (hero.get('trainsToday') === 5) throw new ExpressError('Exceeded day training limit', 400);
   const growth = Math.ceil(Math.random() * 10);
-  hero.trainingHistory.unshift({ date: Date.now(), power: hero.currentPower + growth });
+  hero.trainingHistory.unshift({ date: Date.now(), power: hero.power + growth });
+  hero.power += growth;
   await hero.save();
   await UserModel.updateOne({ _id: userId }, { $inc: { money: growth * 50 } });
   return hero;

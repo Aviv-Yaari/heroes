@@ -23,8 +23,7 @@ export function AddPage() {
   const handleSubmit: React.FormEventHandler = async ev => {
     ev.preventDefault();
     try {
-      const trainingHistory = +values.power > 0 ? [{ date: Date.now(), power: +values.power }] : [];
-      await heroService.add({ ...values, trainingHistory, colors: Array.from(values.colors) });
+      await heroService.add({ ...values, power: +values.power, colors: Array.from(values.colors) });
       navigate('/explore');
       setAlert({ message: 'Hero added', type: 'success' });
     } catch (err) {
@@ -67,7 +66,7 @@ export function AddPage() {
             onClick={(colors: Set<string>) => setValues(values => ({ ...values, colors }))}
           />
         </div>
-        <button>Create</button>
+        <button className="btn">Create</button>
       </form>
     </div>
   );

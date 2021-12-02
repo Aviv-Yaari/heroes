@@ -20,6 +20,9 @@ button {
   font-family: inherit;
   font-size: 1em;
   border: none;
+}
+
+.btn {
   border-radius: 4px;
   padding: 10px 20px;
   background: $clr-primary-1;
@@ -28,18 +31,34 @@ button {
   &:hover {
     background: $clr-primary-2;
   }
-  &.btn-link {
-    background: transparent;
-    padding: 0 5px;
-    color: $clr-primary-1;
-    font-weight: 400;
-    &:hover {
-      color: $clr-primary-2;
-    }
-  }
   &.disabled {
     background: $clr-primary-3;
     cursor: default;
+  }
+}
+
+.btn-trans {
+  padding: 5px 10px;
+  font-size: 0.8em;
+  font-weight: 500;
+  background: transparent;
+  color: #5b7265;
+  border: 1px solid $clr-primary-4;
+  border-radius: 40px;
+  &.selected {
+    background: $clr-primary-2;
+    color: #fff;
+  }
+}
+
+.btn-link {
+  background: transparent;
+  padding: 0 5px;
+  color: $clr-primary-1;
+  font-weight: 400;
+  &:hover {
+    color: $clr-primary-2;
+    background: transparent;
   }
 }
 

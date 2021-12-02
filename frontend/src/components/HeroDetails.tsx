@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function HeroDetails({ hero }: Props) {
-  const { name, ability, colors = [], currentPower, trainingHistory, userId, price } = hero;
+  const { name, ability, colors = [], power, trainingHistory, userId, price } = hero;
   const dateStarted = trainingHistory.length && trainingHistory[trainingHistory.length - 1].date;
   return (
     <section className="hero-details flex column align-center">
@@ -22,7 +22,7 @@ export function HeroDetails({ hero }: Props) {
         />
         <HeroField name="Suit" value={colors.length ? <ColorList colors={colors} /> : 'None'} />
         <HeroField name="Last power" value={trainingHistory[1]?.power || 0} />
-        <HeroField name="Power" value={currentPower} />
+        <HeroField name="Power" value={power} />
         <HeroField name="Owner" value={(userId as any)?.username || 'None'} />
         <HeroField name="Price" value={price} />
       </div>

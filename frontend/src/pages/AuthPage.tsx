@@ -101,7 +101,7 @@ export function AuthPage() {
             errors={errors.fullname}
           />
         )}
-        <button className={`full-width ${isErrros ? 'disabled' : ''}`}>Continue</button>
+        <button className={`btn full-width ${isErrros ? 'disabled' : ''}`}>Continue</button>
         <p>
           {page === 'login' ? 'Not a member yet?' : 'Already a member?'}
           <button type="button" className="btn-link" onClick={handleChangePage}>

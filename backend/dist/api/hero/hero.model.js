@@ -7,12 +7,9 @@ const schema = new mongoose_1.Schema({
     ability: { type: String, enum: ['attacker', 'defender'], required: true },
     colors: [String],
     trainingHistory: [Object],
+    power: { type: Number, default: 0 },
     userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User' },
     price: { type: Number, default: 0 },
-});
-schema.virtual('currentPower').get(function () {
-    var _a;
-    return ((_a = this.trainingHistory[0]) === null || _a === void 0 ? void 0 : _a.power) || 0;
 });
 schema.virtual('trainsToday').get(function () {
     let count = 0;

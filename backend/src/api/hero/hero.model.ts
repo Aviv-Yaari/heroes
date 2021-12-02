@@ -6,7 +6,7 @@ export interface Hero {
   colors: string[];
   trainingHistory: { date: number; power: number }[];
   userId: ObjectId;
-  currentPower: number;
+  power: number;
   price: number;
 }
 
@@ -15,12 +15,9 @@ const schema = new Schema<Hero>({
   ability: { type: String, enum: ['attacker', 'defender'], required: true },
   colors: [String],
   trainingHistory: [Object],
+  power: { type: Number, default: 0 },
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   price: { type: Number, default: 0 },
-});
-
-schema.virtual('currentPower').get(function (this: Hero) {
-  return this.trainingHistory[0]?.power || 0;
 });
 
 schema.virtual('trainsToday').get(function (this: Hero) {

@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
-  const { _id, name, ability, currentPower, userId, price, trainsToday, trainingHistory } = hero;
+  const { _id, name, ability, power, userId, price, trainsToday, trainingHistory } = hero;
   const currentUser = useGetUser();
   const navigate = useNavigate();
   const isTrainingLimit = trainsToday === 5;
@@ -36,14 +36,14 @@ export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
       <div className="flex space-between align-center">
         {ability === 'attacker' ? <IconAttack className="img-ability" /> : <IconDefense className="img-ability" />}
         <span>{name}</span>
-        <span className="current-power">{currentPower}</span>
+        <span className="current-power">{power}</span>
       </div>
       <img className="img-hero" src={`https://robohash.org/${name}?size=200x200`} alt="" />
       {type === 'Explore' && userId && <p className="text-center">Owned by {userId.username}</p>}
       <div className="actions">
         {!userId && onBuy && (
           <button
-            className={`flex align-center justify-center ${isNotEnoughMoney ? 'disabled' : ''}`}
+            className={`btn flex align-center justify-center ${isNotEnoughMoney ? 'disabled' : ''}`}
             onClick={handleBuy}>
             <span>Buy </span>
             <IconCoin className="icon-coin" />
@@ -51,7 +51,7 @@ export function HeroPreview({ type, hero, onTrain, onBuy }: Props) {
           </button>
         )}
         {onTrain && (
-          <button className={isTrainingLimit ? 'disabled' : ''} onClick={handleTrain}>
+          <button className={`btn ${isTrainingLimit ? 'disabled' : ''}`} onClick={handleTrain}>
             {isTrainingLimit
               ? formatDistanceToNowStrict(add(trainingHistory[4].date, { days: 1 }))
               : `Train ${trainsToday}/5`}
